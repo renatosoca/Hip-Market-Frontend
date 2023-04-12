@@ -7,11 +7,32 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        'Eczar': ['Eczar', 'sans-serif'],
       },
+      keyframes: {
+        'fadeIn': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        }
+      },
+      animation: {
+        'fadeIn': 'fadeIn 0.5s ease-in-out',
+      },
+    },
+    screens: {
+      '1xs': '300px',
+      '2xs': '400px',
+      '1cs': '500px',
+      '2cs': '600px',
+      '1sm': '650px',
+      '2sm': '700px',
+      '1md': '750px',
+      '2md': '800px',
+      '1lg': '900px',
+      '2lg': '1024px',
+      '1xl': '1280px',
+      '2xl': '1536px',
     },
   },
   plugins: [],
