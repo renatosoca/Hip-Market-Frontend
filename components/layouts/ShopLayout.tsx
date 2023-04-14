@@ -21,13 +21,14 @@ export const ShopLayout: FC<Props> = ({ children, title, pageDescription, imageF
         { imageFullUrl && <meta name='og:image' content={ imageFullUrl } /> }
       </Head>
       
-      <div className='animate-fadeIn'>
+      <div className='animate-fadeIn min-h-screen flex flex-col h-full'>
         {/* NavBar */}
         <NavBar />
 
         {/* SideBar */}
-
-        { children }
+        <main className='flex-1'>
+          { children }
+        </main>
       </div>
     </>
   )

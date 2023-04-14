@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         'Eczar': ['Eczar', 'sans-serif'],
+        'Jakarta': ['Jakarta', 'sans-serif'],
       },
       keyframes: {
         'fadeIn': {
