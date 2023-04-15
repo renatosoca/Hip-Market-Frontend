@@ -7,9 +7,10 @@ interface Props {
   title: string;
   pageDescription: string;
   imageFullUrl?: string;
+  isHome?: boolean;
 }
 
-export const ShopLayout: FC<Props> = ({ children, title, pageDescription, imageFullUrl }) => {
+export const ShopLayout: FC<Props> = ({ children, title, pageDescription, imageFullUrl, isHome = false }) => {
   return (
     <>
       <Head>
@@ -26,7 +27,7 @@ export const ShopLayout: FC<Props> = ({ children, title, pageDescription, imageF
         <NavBar />
 
         {/* SideBar */}
-        <main className='flex-1 pt-16'>
+        <main className={`flex-1 ${isHome ? 'pt-0' : 'pt-16'}`} >
           { children }
         </main>
       </div>

@@ -1,14 +1,12 @@
+import { FC } from 'react';
 import Image from 'next/image'
 import Link from 'next/link'
 import Carousel from 'react-multi-carousel'
-import { Slide } from 'react-slideshow-image'
-
 
 import "react-multi-carousel/lib/styles.css";
-import { FC } from 'react';
 
 interface Props {
-  images: string[];
+  images?: string[];
 }
 
 const responsive = {
@@ -30,7 +28,9 @@ const responsive = {
   }
 };
 
-export const HomeHeroSlide: FC<Props> = ({images}) => {
+export const HomeHeroSlide: FC<Props> = ({ images }) => {
+  const imagesHero = ['hero-1.avif', 'hero-2.avif', 'hero-1.avif'];
+
   return (
     <div className="h-full">
       <Carousel
@@ -45,11 +45,11 @@ export const HomeHeroSlide: FC<Props> = ({images}) => {
         autoPlaySpeed={8000}
         transitionDuration={500}
       >
-        { images.map( (image, index) => (
+        { imagesHero.map( (image, index) => (
           <div className='h-full' key={index}>
             <Image
               className='w-full h-full object-cover select-none pointer-events-none'
-              src={`/products/${image}`}
+              src={`/images/${image}`}
               alt='Tesla'
               width={ 2000 }
               height={ 2000 }
