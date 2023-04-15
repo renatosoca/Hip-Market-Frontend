@@ -33,11 +33,11 @@ export default function Home() {
         </div>
       </section>
 
-      <main>
+      <section>
         <div className='max-w-7xl mx-auto'>
           <ProductList products={ products } />
         </div>
-      </main>
+      </section>
     </ShopLayout>
   )
 }

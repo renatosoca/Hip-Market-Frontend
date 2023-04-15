@@ -1,4 +1,4 @@
-import { ProductSlideImage, ShopLayout } from '@/components';
+import { ItemQuantity, ListSize, ProductSlideImage, ShopLayout } from '@/components';
 import { MdOutlineAddCircleOutline, MdOutlineRemoveCircleOutline } from 'react-icons/md';
 
 import 'react-slideshow-image/dist/styles.css'
@@ -9,7 +9,7 @@ const product = initialData.products[0];
 const slug = () => {
   return (
     <ShopLayout title='Product 1' pageDescription='Product has brow'>
-      <section className='w-full h-full pt-16'>
+      <section className='w-full h-full'>
         <div className='grid grid-cols-12 gap-3 px-8'>
           <div className='col-span-8'>
             <div className='px-4 py-2'>
@@ -24,22 +24,12 @@ const slug = () => {
             <div className=''>
               <div>
                 <p>Tamaño</p>
-                <div className='flex gap-2'>
-                  {
-                    product.sizes.map( size => (
-                      <button key={size}>{ size }</button>
-                    ))
-                  }
-                </div>
+                <ListSize sizes={product.sizes} />
               </div>  {/* END SIZE */}
 
               <div>
                 <p>Cantidad</p>
-                <div className='flex gap-2'>
-                  <button><MdOutlineRemoveCircleOutline /></button>
-                  <span>1</span>
-                  <button><MdOutlineAddCircleOutline /></button>
-                </div>
+                <ItemQuantity />
               </div>  {/* END QUANTITY */}
             </div>
 

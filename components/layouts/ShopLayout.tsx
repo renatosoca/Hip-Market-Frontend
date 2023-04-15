@@ -26,7 +26,7 @@ export const ShopLayout: FC<Props> = ({ children, title, pageDescription, imageF
         <NavBar />
 
         {/* SideBar */}
-        <main className='flex-1'>
+        <main className='flex-1 pt-16'>
           { children }
         </main>
       </div>
