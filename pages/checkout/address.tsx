@@ -1,5 +1,4 @@
-import { ShopLayout } from '@/components'
-import React from 'react'
+import { ShopLayout } from '@/components';
 
 const AddressPage = () => {
   return (
@@ -11,67 +10,136 @@ const AddressPage = () => {
           <div className='grid grid-cols-12 gap-4'>
             <div className='col-span-12'>
               <div className="w-full group">
-                <div className={`relative bg-gray-300 pt-2 w-full border-b-[.15rem] border-gray-400 hover:border-gray-500 text-gray-600 after:bg-[#5FA7F0] after:content[''] after:absolute after:top-full after:left-0 after:w-full after:h-[.18rem] after:scale-0 focus-within:after:scale-100 after:transition-all after:duration-300 ease-in`} >
+                <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
 
                   <input
-                    className={`w-full px-2 pt-3 pb-1 outline-none text-black font-medium bg-inherit resize-none group-[:not(placeholder-shown)~]:bg-black`}
+                    className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="text"
                     name="name"
                     id="name"
-                    placeholder=" "
+                    placeholder="Ingresa tu nombre"
                   />
                   
                   <label
                     htmlFor="name"
-                    className={`absolute top-[50%] group-focus-within:top-[0] group-[:not(:placeholder-shown)]:top-[0] transform -translate-y-1/2 group-focus-within:translate-y-0 group-[:not(:placeholder-shown)]:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] group-[:not(:placeholder-shown)]:text-[#5FA7F0] text-base group-focus-within:text-xs group-[:not(:placeholder-shown)]:text-xs left-2 bg-inherit font-medium focus-within:top-0 transition-[top transform] duration-200 cursor-text`}
+                    className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
                   >Nombre</label>
                 </div>
 
-                <span className={`text-[.8rem] text-red-400 font-medium`} ></span>
-              </div>
-            </div>
-
-            <div className='col-span-12'>
-              <div className="w-full">
-                <div className={`border-gray-400 text-gray-600 hover:border-white after:bg-[#5FA7F0] relative w-full border-b-[.15rem] after:content[''] after:absolute after:top-full after:left-0 after:w-full after:h-[.18rem] after:scale-0 focus-within:after:scale-100 after:transition-all after:duration-300 ease-in`} >
+                <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
+                  <span></span>
+                </div>
+              </div>  {/* END INPUT NAME */}
+              
+              <div className="w-full group">
+                <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
 
                   <input
-                    className={`inputs__input ${false? 'inputs__input-error': ''} w-full px-2 pt-3 pb-1 outline-none text-white font-normal bg-inherit resize-none`}
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder=" "
-                    autoComplete="off"
+                    className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
+                    type="text"
+                    name="lastname"
+                    id="lastname"
+                    placeholder="Ingresa tu apellido"
                   />
                   
                   <label
-                    htmlFor="email"
-                    className={`absolute top-[50%] group-focus-within:top-[5%] group-[:not(:placeholder-shown)]:top-[5%] transform -translate-y-1/2 group-focus-within:translate-y-0 group-[:not(:placeholder-shown)]:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] group-[:not(:placeholder-shown)]:text-[#5FA7F0] text-base group-focus-within:text-xs group-[:not(:placeholder-shown)]:text-xs left-2 font-medium bg-inherit focus-within:top-0 transition-[top transform] duration-200 cursor-text`}
-                  >Correo</label>
+                    htmlFor="lastname"
+                    className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
+                  >Apellido</label>
                 </div>
 
-                <span className={`${false? 'block' : 'hidden'} text-[.8rem] text-red-400 font-medium`} ></span>
-              </div>
+                <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
+                  <span></span>
+                </div>
+              </div>  {/* END INPUT LASTNAME */}
 
-              <div className="w-full">
-                <div className="relative">
+              <div className="w-full group">
+                <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
+
                   <input
-                    className="block w-full px-2 pt-3 pb-1 outline-none text-black font-normal bg-inherit resize-none group-focus-within:text-[#5FA7F0] group-focus-within:pt-4 group-focus-within:pb-2"
+                    className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="text"
-                    name="prueba"
-                    id="prueba"
-                    placeholder=" "
-                    autoComplete="off"
+                    name="address"
+                    id="address"
+                    placeholder="Ingresa tu dirección"
                   />
+                  
                   <label
-                    htmlFor="prueba"
-                    className="absolute left-2 font-medium bg-inherit text-gray-300 top-1/2 transform -translate-y-1/2 group-focus-within:top-0 group-focus-within:text-[#5FA7F0] group-focus-within:text-sm group-focus-within:translate-y-[-15px] transition-all duration-200 cursor-text"
-                  >
-                    Correo
-                  </label>
+                    htmlFor="address"
+                    className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
+                  >Dirección</label>
                 </div>
-                <span className="block text-[.8rem] text-red-400 font-medium group-focus-within:block">Hola</span>
-              </div>
+
+                <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
+                  <span></span>
+                </div>
+              </div>  {/* END INPUT ADDRESS */}
+
+              <div className="w-full group">
+                <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
+
+                  <input
+                    className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
+                    type="text"
+                    name="address-2"
+                    id="address-2"
+                    placeholder="Ingresa tu segunda dirección"
+                  />
+                  
+                  <label
+                    htmlFor="address-2"
+                    className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
+                  >Dirección 2 (opcional)</label>
+                </div>
+
+                <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
+                  <span></span>
+                </div>
+              </div>  {/* END INPUT ADDRESS 2 */}
+
+              <div className="w-full group">
+                <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
+
+                  <input
+                    className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
+                    type="text"
+                    name="postalCode"
+                    id="postalCode"
+                    placeholder="Ingresa tu código postal"
+                  />
+                  
+                  <label
+                    htmlFor="postalCode"
+                    className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
+                  >Código Postal</label>
+                </div>
+
+                <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
+                  <span></span>
+                </div>
+              </div>  {/* END INPUT POSTAL CODE */}
+
+              <div className="w-full group">
+                <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
+
+                  <input
+                    className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
+                    type="text"
+                    name="city"
+                    id="city"
+                    placeholder="Ingresa tu ciudad"
+                  />
+                  
+                  <label
+                    htmlFor="city"
+                    className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
+                  >Ciudad</label>
+                </div>
+
+                <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
+                  <span></span>
+                </div>
+              </div>  {/* END INPUT CITY */}
             </div>
           </div>
         </div>

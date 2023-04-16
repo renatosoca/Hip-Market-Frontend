@@ -10,6 +10,7 @@ module.exports = {
       fontFamily: {
         'Eczar': ['Eczar', 'sans-serif'],
         'Jakarta': ['Jakarta', 'sans-serif'],
+        'Gotham': ['Gotham SSm', 'sans-serif'],
       },
       keyframes: {
         'fadeIn': {
@@ -31,9 +32,10 @@ module.exports = {
       '1md': '750px',
       '2md': '800px',
       '1lg': '900px',
-      '2lg': '1024px',
-      '1xl': '1280px',
-      '2xl': '1536px',
+      '2lg': '950px',
+      '1xl': '1024px',
+      '2xl': '1280px',
+      'xxl': '1536px',
     },
   },
   plugins: [],

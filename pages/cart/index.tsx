@@ -3,7 +3,7 @@ import React from 'react';
 
 const CartPage = () => {
   return (
-    <ShopLayout title='Carrito de compras' pageDescription='Carrito de comprs de los productos'>
+    <ShopLayout title='Tu carrito' pageDescription='Carrito de comprs de los productos'>
       <section className='max-w-[37.5rem] 2lg:max-w-[75rem] mx-auto px-4 2lg:px-10 pt-6'>
         <h2 className='font-Gotham font-semibold text-2xl 2lg:text-3xl'>Carrito</h2>
 
