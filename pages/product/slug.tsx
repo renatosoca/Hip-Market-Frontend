@@ -6,7 +6,7 @@ import { initialData } from '@/database/products';
 
 const product = initialData.products[0];
 
-const slug = () => {
+const ProductPage = () => {
   return (
     <ShopLayout title='Product 1' pageDescription='Product has brow'>
       <section className='w-full h-full'>
@@ -49,4 +49,4 @@ const slug = () => {
   )
 }
 
-export default slug
+export default ProductPage

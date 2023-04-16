@@ -1,7 +1,7 @@
 import { HomeHeroSlide, ProductList, ShopLayout } from '@/components';
 import { initialData } from '@/database/products';
 
-export default function Home() {
+export default function HomePage() {
 
   const { products } = initialData as any;
   return (
