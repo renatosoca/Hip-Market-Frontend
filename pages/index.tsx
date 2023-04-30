@@ -1,15 +1,15 @@
 import { HomeHeroSlide, ProductList, ShopLayout } from '@/components';
+import { useProducts } from '@/hooks';
 import useSWR from 'swr';
-import { IProduct } from '@/interfaces';
 
 const fetcher = (...args: [key: string]) => fetch(...args).then((res) => res.json());
 
 export default function HomePage() {
 
-  const { data, error, isLoading } = useSWR('http://localhost:4003/api/products', fetcher);
-  
-  if (error) return <div>failed to load</div>
-  if (isLoading) return <div>loading...</div>
+  /* const { data, error, isLoading } = useSWR('http://localhost:4003/api/products', fetcher); */
+  const { products, isError, isLoading } = useProducts('');
+
+  if (isError) return <div>failed to load</div>
 
   return (
     <ShopLayout title='Home' pageDescription='Todos los productos con la mejor calidad' isHome >
@@ -19,7 +19,11 @@ export default function HomePage() {
 
       <section className='flex justify-center px-4'>
         <div className='max-w-7xl'>
-          <ProductList products={ data.products } />
+          {
+            isLoading
+              ? <p>Cargando</p>
+              : <ProductList products={products} />
+          }
         </div>
       </section>
     </ShopLayout>

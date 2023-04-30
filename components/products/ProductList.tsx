@@ -1,19 +1,19 @@
-import { IProduct } from '@/interfaces'
+import { Product } from '@/interfaces'
 import { FC } from 'react'
 import { ProductCard } from './ProductCard'
 
 interface Props {
-  products: IProduct[]
+  products: Product[]
 }
 
 export const ProductList: FC<Props> = ({ products }) => {
   return (
     <div className='flex flex-wrap justify-center'>
-    {
-      products.map((product, index) => (
-        <ProductCard product={product} key={index} />
-      ))
-    }
-  </div>
+      {
+        products.map((product, index) => (
+          <ProductCard product={product} key={index} />
+        ))
+      }
+    </div>
   )
 }
