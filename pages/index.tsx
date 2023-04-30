@@ -6,8 +6,7 @@ const fetcher = (...args: [key: string]) => fetch(...args).then((res) => res.jso
 
 export default function HomePage() {
 
-  /* const { data, error, isLoading } = useSWR('http://localhost:4003/api/products', fetcher); */
-  const { products, isError, isLoading } = useProducts('');
+  const { products, isError, isLoading } = useProducts('products');
 
   if (isError) return <div>failed to load</div>
 
