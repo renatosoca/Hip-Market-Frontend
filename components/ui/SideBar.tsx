@@ -1,11 +1,20 @@
+import { KeyboardEvent, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useUi } from '@/hooks';
 import Link from 'next/link';
+import { useUi } from '@/hooks';
 
 export const SideBar = () => {
 
   const router = useRouter()
   const { isMenuOpen, handleToggleSideMenu } = useUi();
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearchTerm = () => {
+    if (searchTerm.trim().length === 0) return;
+
+    handleNavigate(`/search/${searchTerm}`);
+  }
 
   const handleNavigate = (url: string) => {
     handleToggleSideMenu();
@@ -22,7 +31,20 @@ export const SideBar = () => {
       <div
         className={`bg-white absolute top-0 bottom-0 right-0 w-64 z-50 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} transition-[transform] duration-500 z-50`}
       >
-        <button>Buscar</button>
+        <div className='px-4 py-4'>
+          <input
+            className='w-full px-4 py-2 border border-gray-300 rounded'
+            type="text"
+            placeholder='Buscar'
+            value={searchTerm}
+            onChange={({ target }) => setSearchTerm(target.value)}
+            autoComplete='off'
+            autoFocus
+            onKeyDown={({ key }) => (key === 'Enter') && handleSearchTerm()}
+          />
+
+          {/* Implementar Icon search */}
+        </div>
 
         <ul className="px-4">
           <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Perfil</li>
