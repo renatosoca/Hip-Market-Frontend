@@ -1,7 +1,7 @@
 import { ProductList, ShopLayout } from '@/components'
 import { useProducts } from '@/hooks';
 
-const women = () => {
+const WomenPage = () => {
 
   const { products, isLoading } = useProducts('products?gender=women');
 
@@ -20,4 +20,4 @@ const women = () => {
   )
 }
 
-export default women;
+export default WomenPage;

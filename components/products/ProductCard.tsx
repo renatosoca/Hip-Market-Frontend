@@ -1,10 +1,10 @@
 import { FC, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product } from '@/interfaces';
+import { IProduct } from '@/interfaces';
 
 interface Props {
-  product: Product
+  product: IProduct
 }
 
 export const ProductCard: FC<Props> = ({ product }) => {
@@ -23,7 +23,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href='/product/slug' >
+      <Link href={`/product/${product.slug}`} >
         <Image
           className='animate-fadeIn'
           src={productImage}

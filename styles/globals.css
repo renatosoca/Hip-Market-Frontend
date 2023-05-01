@@ -1,21 +1,15 @@
-@import url('https://fonts.googleapis.com/css?family=Eczar:800');
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.cdnfonts.com/css/gotham-ssm');
+@import url("https://fonts.googleapis.com/css?family=Eczar:800");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.cdnfonts.com/css/gotham-ssm");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-.summary-card {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
-}
 
 .input:not(:placeholder-shown) ~ .input__label {
   top: 5%;
   transform: translateY(0);
   font-size: 0.75rem;
   line-height: 1.4;
-  color: #5FA7F0;
+  color: #5fa7f0;
 }

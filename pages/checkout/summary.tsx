@@ -1,5 +1,11 @@
-import { CartEmpty, CartList, CartOrderSummary, ShopLayout } from '@/components'
-import React from 'react';
+import { CartList, CartOrderSummary, ShopLayout } from '@/components'
+import { initialData } from '@/database/products';
+
+const products: any = [
+  initialData.products[0],
+  initialData.products[1],
+  initialData.products[2]
+];
 
 const SummaryPage = () => {
   return (
@@ -11,7 +17,7 @@ const SummaryPage = () => {
 
         <div className='2lg:grid 2lg:grid-cols-12'>
           <div className='border-t-2 2lg:border-0 pt-2 2lg:pt-12 2lg:col-span-6'>
-            <CartList />
+            <CartList products={products} />
           </div>
 
           <div className='mt-6 2lg:mt-0 border-t-2 2lg:border-0 2lg:pt-6 2lg:pl-8 2lg:col-span-6'>

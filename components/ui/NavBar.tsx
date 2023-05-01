@@ -1,3 +1,4 @@
+import { useUi } from '@/hooks';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { GrCart, GrSearch } from 'react-icons/gr';
@@ -5,16 +6,17 @@ import { GrCart, GrSearch } from 'react-icons/gr';
 export const NavBar = () => {
 
   const { asPath } = useRouter();
+  const { handleToggleSideMenu } = useUi();
 
   return (
-    <header className='fixed w-full bg-white text-black font-bold z-50'>
+    <header className='sticky bottom-0 w-full bg-white text-black font-bold z-10'>
       <div className='flex justify-between gap-4 py-4'>
         <h1 className='flex'>
           <Link href='/' className='font-Eczar text-xl 2xs:text-2xl px-2 2xs:px-4'>HipMarket</Link>
           <span>| shop</span>
         </h1>
 
-        <nav className='block'>
+        <nav className='hidden'>
           <ul className='flex gap-2'>
             <li
               className={`${asPath === '/category/men' ? 'bg-blue-500 text-white' : ''} px-2 py-1 rounded`}
@@ -54,7 +56,9 @@ export const NavBar = () => {
             <GrCart className='text-[1.35rem]' />
           </Link>
 
-          <button>
+          <button
+            onClick={handleToggleSideMenu}
+          >
             Menu
           </button>
         </div>

@@ -1,10 +1,9 @@
-import { ProductList, ShopLayout } from '@/components'
+import { ProductList, ShopLayout } from '@/components';
 import { useProducts } from '@/hooks';
-import React from 'react'
 
-const kid = () => {
+const KidPage = () => {
 
-  const { products, isLoading } = useProducts('products?gender=kid');
+  const { products, isLoading } = useProducts('/products?gender=kid');
 
   return (
     <ShopLayout title='Niños' pageDescription='Productos para niños'>
@@ -12,7 +11,7 @@ const kid = () => {
         <div className='max-w-7xl'>
           {
             isLoading
-              ? <p>Cargando</p>
+              ? <p>Cargando...</p>
               : <ProductList products={products} />
           }
         </div>
@@ -21,4 +20,4 @@ const kid = () => {
   )
 }
 
-export default kid
+export default KidPage;

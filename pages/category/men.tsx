@@ -1,9 +1,9 @@
-import { ProductList, ShopLayout } from '@/components'
+import { ProductList, ShopLayout } from '@/components';
 import { useProducts } from '@/hooks';
 
-const men = () => {
+const MenPage = () => {
 
-  const { products, isLoading } = useProducts('products?gender=men');
+  const { products, isLoading } = useProducts('/products?gender=men');
 
   return (
     <ShopLayout title='Hombres' pageDescription='Productos para hombres'>
@@ -20,4 +20,4 @@ const men = () => {
   )
 }
 
-export default men
+export default MenPage;

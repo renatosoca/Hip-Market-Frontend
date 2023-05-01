@@ -1,19 +1,16 @@
 import { HomeHeroSlide, ProductList, ShopLayout } from '@/components';
 import { useProducts } from '@/hooks';
-import useSWR from 'swr';
 
-const fetcher = (...args: [key: string]) => fetch(...args).then((res) => res.json());
+const imagesHero = ['hero-1.avif', 'hero-2.avif', 'hero-1.avif'];
 
 export default function HomePage() {
 
-  const { products, isError, isLoading } = useProducts('products');
-
-  if (isError) return <div>failed to load</div>
+  const { products, isLoading } = useProducts('/products');
 
   return (
     <ShopLayout title='Home' pageDescription='Todos los productos con la mejor calidad' isHome >
       <section className='h-screen relative'>
-        <HomeHeroSlide />
+        <HomeHeroSlide images={imagesHero} />
       </section>
 
       <section className='flex justify-center px-4'>

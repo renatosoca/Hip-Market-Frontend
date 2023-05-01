@@ -6,7 +6,7 @@ import Carousel from 'react-multi-carousel'
 import "react-multi-carousel/lib/styles.css";
 
 interface Props {
-  images?: string[];
+  images: string[];
 }
 
 const responsive = {
@@ -29,7 +29,6 @@ const responsive = {
 };
 
 export const HomeHeroSlide: FC<Props> = ({ images }) => {
-  const imagesHero = ['hero-1.avif', 'hero-2.avif', 'hero-1.avif'];
 
   return (
     <div className="h-full">
@@ -45,21 +44,21 @@ export const HomeHeroSlide: FC<Props> = ({ images }) => {
         autoPlaySpeed={8000}
         transitionDuration={500}
       >
-        { imagesHero.map( (image, index) => (
+        {images.map((image, index) => (
           <div className='h-full' key={index}>
             <Image
               className='w-full h-full object-cover select-none pointer-events-none'
               src={`/images/${image}`}
               alt='Tesla'
-              width={ 2000 }
-              height={ 2000 }
+              width={2000}
+              height={2000}
               priority
             />
 
             <div className='absolute bottom-24 text-white w-full flex flex-col items-center px-4 font-Jakarta font-bold text-center'>
               <h2 className='text-3xl 1sm:text-5xl pb-3'>Estilos Modernos</h2>
               <h3 className='pb-8 1sm:text-xl'>Modelos reconfortantes de la ultima temporada</h3>
-              <Link 
+              <Link
                 href='/'
                 className='bg-white text-gray-500 hover:text-gray-700 rounded px-4 py-3 w-full 2cs:w-max 2cs:px-24 text-center font-semibold transition-colors'
               >

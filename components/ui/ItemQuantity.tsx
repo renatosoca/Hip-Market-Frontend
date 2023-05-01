@@ -9,7 +9,7 @@ export const ItemQuantity = () => {
         <MdOutlineRemoveCircleOutline className='text-[1.35rem]' />
       </button>
 
-      <span className='px-1 font-Jakarta font-semibold' >1</span>
+      <span className='px-1 font-Jakarta font-semibold' >10</span>
 
       <button
         className='block rounded-full'

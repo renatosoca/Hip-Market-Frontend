@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { FC, ReactNode } from 'react';
-import { NavBar } from '../ui';
+import { NavBar, SideBar } from '../ui';
 
 interface Props {
   children: ReactNode;
@@ -14,21 +14,20 @@ export const ShopLayout: FC<Props> = ({ children, title, pageDescription, imageF
   return (
     <>
       <Head>
-        <title>{ `${title} | HipMarket` }</title>
-        <meta name='description' content={ pageDescription } />
-        <meta name='og:title' content={ title } />
-        <meta name='og:description' content={ pageDescription } />
+        <title>{`${title} | HipMarket`}</title>
+        <meta name='description' content={pageDescription} />
+        <meta name='og:title' content={title} />
+        <meta name='og:description' content={pageDescription} />
 
-        { imageFullUrl && <meta name='og:image' content={ imageFullUrl } /> }
+        {imageFullUrl && <meta name='og:image' content={imageFullUrl} />}
       </Head>
-      
-      <div className='animate-fadeIn min-h-screen flex flex-col h-full'>
-        {/* NavBar */}
-        <NavBar />
 
-        {/* SideBar */}
-        <main className={`flex-1 ${isHome ? 'pt-0' : 'pt-16'}`} >
-          { children }
+      <div className='animate-fadeIn min-h-screen flex flex-col h-full overflow-hidden'>
+        <NavBar />
+        <SideBar />
+
+        <main className={`flex-1 ${isHome ? 'pt-0' : 'pt-16'} overflow-y-auto`} >
+          {children}
         </main>
       </div>
     </>

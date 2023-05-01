@@ -1,5 +1,11 @@
-import { CartEmpty, CartList, CartOrderSummary, ShopLayout } from '@/components'
-import React from 'react';
+import { CartList, CartOrderSummary, ShopLayout } from '@/components';
+import { initialData } from '@/database/products';
+
+const products: any = [
+  initialData.products[0],
+  initialData.products[1],
+  initialData.products[2]
+];
 
 const CartPage = () => {
   return (
@@ -11,7 +17,7 @@ const CartPage = () => {
 
         <div className='2lg:grid 2lg:grid-cols-12'>
           <div className='border-t-2 2lg:border-0 pt-2 2lg:pt-12 2lg:col-span-6'>
-            <CartList editable />
+            <CartList products={products} editable />
           </div>
 
           <div className='mt-6 2lg:mt-0 border-t-2 2lg:border-0 2lg:pt-6 2lg:pl-8 2lg:col-span-6'>
@@ -21,7 +27,7 @@ const CartPage = () => {
               </div>
 
               <CartOrderSummary />
-              
+
               <div className='absolute 2lg:relative bottom-0 right-0 left-0 py-4 2lg:py-0 px-4 2lg:px-0 2lg:mt-2 w-full bg-white 2lg:bg-inherit flex justify-center shadow-2xl 2lg:shadow-none shadow-black'>
                 <button
                   className='block bg-blue-600 hover:bg-blue-700 max-w-xl w-full py-2 px-4 rounded text-white font-semibold transition-colors'
