@@ -1,9 +1,12 @@
-import { useUi } from '@/hooks';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { GrCart, GrSearch } from 'react-icons/gr';
+import { useCart, useUi } from '@/hooks';
 
 export const NavBar = () => {
+
+  const { numberOfProducts } = useCart();
+
 
   const { asPath } = useRouter();
   const { handleToggleSideMenu } = useUi();
@@ -16,7 +19,7 @@ export const NavBar = () => {
           <span>| shop</span>
         </h1>
 
-        <nav className='hidden'>
+        <nav className='block'>
           <ul className='flex gap-2'>
             <li
               className={`${asPath === '/category/men' ? 'bg-blue-500 text-white' : ''} px-2 py-1 rounded`}
@@ -51,9 +54,15 @@ export const NavBar = () => {
 
           <Link
             href='/cart'
-            className='text-black'
+            className='relative text-black'
           >
             <GrCart className='text-[1.35rem]' />
+
+            <span
+              className={`absolute -top-2/3 left-[40%] rounded-full bg-blue-500 text-white text-sm font-Jakarta py-[.1rem] px-2 flex items-center justify-center`}
+            >
+              {numberOfProducts > 9 ? '+9' : numberOfProducts}
+            </span>
           </Link>
 
           <button

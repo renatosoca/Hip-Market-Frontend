@@ -25,6 +25,7 @@ export const ProductSlideImage: FC<Props> = ({ images }) => {
               alt={image}
               width={1920}
               height={1080}
+              priority
             />
           </div>
         ))

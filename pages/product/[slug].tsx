@@ -1,14 +1,53 @@
+import { useState } from 'react';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { ItemQuantity, ListSize, ProductSlideImage, ShopLayout } from '@/components';
-import { IProductResponse, IProductSlugs, IProductBySlug } from '@/interfaces';
+import { IProductResponse, IProductSlugs, IProductBySlug, ICartProduct, ISizes } from '@/interfaces';
 import { apiProducts } from '@/apis';
 import 'react-slideshow-image/dist/styles.css'
+import { useCart } from '@/hooks';
 
 interface Props {
   product: IProductResponse;
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+
+  const router = useRouter()
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+    _id: product._id,
+    images: product.images[0],
+    price: product.price,
+    size: undefined,
+    slug: product.slug,
+    title: product.title,
+    gender: product.gender,
+    quantity: 1,
+  });
+
+  const { addProductToCart } = useCart();
+
+  const handleSelectedSize = (size: ISizes) => {
+    setTempCartProduct({
+      ...tempCartProduct,
+      size
+    });
+  }
+
+  const handleUpdateQuantity = (quantity: number) => {
+    setTempCartProduct({
+      ...tempCartProduct,
+      quantity
+    });
+  }
+
+  const handleAddProductToCart = () => {
+    if (!tempCartProduct.size) return;
+
+    addProductToCart(tempCartProduct);
+    router.push('/cart');
+  }
+
   return (
     <ShopLayout title={product.title} pageDescription='Product has brow'>
       <section className='w-full h-full'>
@@ -26,20 +65,46 @@ const ProductPage: NextPage<Props> = ({ product }) => {
             <div className=''>
               <div>
                 <p>Tamaño</p>
-                <ListSize sizes={product.sizes} />
+                <ListSize
+                  sizes={product.sizes}
+                  selectedSize={tempCartProduct.size}
+                  handleSelectedSize={handleSelectedSize}
+                />
               </div>  {/* END SIZE */}
 
               <div>
-                <p>Cantidad</p>
-                <ItemQuantity />
+                {
+                  product.inStock > 0 && (
+                    <>
+                      <p>Cantidad</p>
+                      <ItemQuantity
+                        currentValue={tempCartProduct.quantity}
+                        handleUpdateQuantity={handleUpdateQuantity}
+                        maxValue={product.inStock}
+                      />
+                    </>
+                  )
+                }
               </div>  {/* END QUANTITY */}
             </div>
 
-            <button
-              className='block w-full bg-blue-600 text-white py-2 px-4 rounded font-semibold'
-            >
-              Agregar al carrito
-            </button>
+            {
+              product.inStock > 0 ?
+                <button
+                  className='block w-full bg-blue-600 text-white py-2 px-4 rounded font-semibold'
+                  onClick={handleAddProductToCart}
+                >
+                  {
+                    tempCartProduct.size
+                      ? 'Agregar al carrito'
+                      : 'Seleccione una talla'
+                  }
+                </button> :
+
+                <button className='block w-full bg-red-600 text-white py-2 px-4 rounded font-semibold' >
+                  Agotado
+                </button>
+            }
 
             <div>
               <p>{product.description}</p>

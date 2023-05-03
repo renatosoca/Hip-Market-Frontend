@@ -1,11 +1,11 @@
-import { KeyboardEvent, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useUi } from '@/hooks';
 
 export const SideBar = () => {
 
-  const router = useRouter()
+  const { push } = useRouter()
   const { isMenuOpen, handleToggleSideMenu } = useUi();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,7 +18,7 @@ export const SideBar = () => {
 
   const handleNavigate = (url: string) => {
     handleToggleSideMenu();
-    router.push(url);
+    push(url);
   }
 
   return (
@@ -39,7 +39,7 @@ export const SideBar = () => {
             value={searchTerm}
             onChange={({ target }) => setSearchTerm(target.value)}
             autoComplete='off'
-            autoFocus
+            autoFocus={isMenuOpen}
             onKeyDown={({ key }) => (key === 'Enter') && handleSearchTerm()}
           />
 
