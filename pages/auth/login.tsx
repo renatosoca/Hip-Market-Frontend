@@ -1,28 +1,63 @@
-import { FormEvent } from 'react';
+import { useForm } from 'react-hook-form';
 import { AuthLayout } from '@/components';
+import { isEmail } from '@/utils';
+import { hipMarketApi } from '@/apis';
+import { useState } from 'react';
+import Link from 'next/link';
+
+interface FormData {
+  email: string,
+  password: string,
+};
+
 
 const LoginPage = () => {
 
-  const handleSubmitLogin = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+
+  const [showError, setShowError] = useState(false)
+
+  const handleSubmitLogin = async ({ email, password }: FormData) => {
+    try {
+      const { data } = await hipMarketApi.post('/auth/login', { email, password });
+      console.log(data)
+
+    } catch (error) {
+      //console.log(error.response.data)
+      setShowError(true)
+
+      setTimeout(() => setShowError(false), 3000);
+    }
   }
+
   return (
     <AuthLayout title='Ingresar' pageDescription='Inicio de sesión' >
       <section className='w-full'>
         <div className='px-5 max-w-[25rem]'>
           <h2 className='font-Gotham font-medium text-xl'>Iniciar Sesión</h2>
 
-          <form onSubmit={handleSubmitLogin}>
+          {
+            showError && (
+              <div className='bg-red-500 text-white text-center py-2 px-3 rounded mt-3'>
+                <span>El correo electrónico o la contraseña son incorrectos</span>
+              </div>
+            )
+          }
+
+          <form onSubmit={handleSubmit(handleSubmitLogin)}>
             <div className="w-full group">
               <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
 
                 <input
                   className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                   type="email"
-                  name="email"
                   id="email"
                   placeholder="Ingresa tu email"
                   autoComplete='off'
+                  {...register('email', {
+                    required: 'Este campo es requerido',
+                    validate: isEmail
+                  })}
                 />
 
                 <label
@@ -32,9 +67,35 @@ const LoginPage = () => {
               </div>
 
               <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                <span></span>
+                <span>{errors.email?.message}</span>
               </div>
             </div>  {/* END INPUT EMAIL */}
+
+            <div className="w-full group">
+              <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
+
+                <input
+                  className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
+                  type="password"
+                  id="password"
+                  placeholder="Ingresa tu contraseña"
+                  autoComplete='off'
+                  {...register('password', {
+                    required: 'Este campo es requerido',
+                    minLength: { value: 6, message: 'La contraseña debe tener al menos 6 caracteres' }
+                  })}
+                />
+
+                <label
+                  htmlFor="password"
+                  className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
+                >Contraseña</label>
+              </div>
+
+              <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
+                <span>{errors.password?.message}</span>
+              </div>
+            </div>  {/* END INPUT PASSWORD */}
 
             <button
               type='submit'
@@ -43,6 +104,12 @@ const LoginPage = () => {
               Continuar
             </button>
           </form>
+
+          <div>
+            <Link href='/auth/register' >
+              Registrarse
+            </Link>
+          </div>
         </div>
       </section>
     </AuthLayout>

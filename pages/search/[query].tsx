@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from 'next';
 import { ProductList, ShopLayout } from '@/components';
-import { apiProducts } from '@/apis';
+import { hipMarketApi } from '@/apis';
 import { IProduct } from '@/interfaces';
 
 interface Props {
@@ -45,13 +45,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
   let products = [];
 
-  const { data } = await apiProducts.get(`/products/search/${query}`);
+  const { data } = await hipMarketApi.get(`/products/search/${query}`);
   const isFoundProduct = data.products.length > 0;
   products = data.products;
 
   if (!isFoundProduct) {
-    /* const { data } = await apiProducts.get(`/products`); */
-    const { data } = await apiProducts.get(`/products/search/Cybertruck`);
+    /* const { data } = await hipMarketApi.get(`/products`); */
+    const { data } = await hipMarketApi.get(`/products/search/Cybertruck`);
     products = data.products;
   }
 

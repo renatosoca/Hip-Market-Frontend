@@ -1,1 +1,1 @@
-export { default as apiProducts } from './apiProducts';
+export { default as hipMarketApi } from './hipMarketApi';

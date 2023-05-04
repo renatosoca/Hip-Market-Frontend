@@ -3,9 +3,9 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ItemQuantity, ListSize, ProductSlideImage, ShopLayout } from '@/components';
 import { IProductResponse, IProductSlugs, IProductBySlug, ICartProduct, ISizes } from '@/interfaces';
-import { apiProducts } from '@/apis';
-import 'react-slideshow-image/dist/styles.css'
+import { hipMarketApi } from '@/apis';
 import { useCart } from '@/hooks';
+import 'react-slideshow-image/dist/styles.css'
 
 interface Props {
   product: IProductResponse;
@@ -119,7 +119,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
 
-  const { data } = await apiProducts.get<IProductSlugs>('/products/slugs');
+  const { data } = await hipMarketApi.get<IProductSlugs>('/products/slugs');
 
   return {
     paths: data.slugs.map(({ slug }) => ({ params: { slug } })),
@@ -130,7 +130,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const { slug = '' } = params as { slug: string };
-  const { data } = await apiProducts.get<IProductBySlug>(`/products/${slug}`);
+  const { data } = await hipMarketApi.get<IProductBySlug>(`/products/${slug}`);
 
   if (!data.product) {
     return {
