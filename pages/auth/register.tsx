@@ -1,8 +1,10 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { AuthLayout } from '@/components';
 import { isEmail } from '@/utils';
-import { hipMarketApi } from '@/apis';
-import { useState } from 'react';
+import { useAuth } from '@/hooks';
+import Link from 'next/link';
 
 interface FormData {
   name: string;
@@ -12,28 +14,33 @@ interface FormData {
   confirmPassword: string,
 };
 
-
 const RegisterPage = () => {
 
+  const router = useRouter();
+
+  const { registerUser } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
-  const [showError, setShowError] = useState(false)
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmitLogin = async ({ email, password }: FormData) => {
-    try {
-      const { data } = await hipMarketApi.post('/auth/register', { email, password });
-      console.log(data)
+  const handleSubmitRegister = async ({ name, lastname, email, password }: FormData) => {
+    setShowError(false);
 
-    } catch (error) {
-      //console.log(error.response.data)
+    const { hasError, message } = await registerUser(name, lastname, email, password);
+    if (hasError) {
+      setErrorMessage(`${message}`);
       setShowError(true)
-
       setTimeout(() => setShowError(false), 3000);
+      return;
     }
+
+    const redirect = router.query.redirect?.toString() || '/';
+    router.replace(redirect);
   }
 
   return (
-    <AuthLayout title='Ingresar' pageDescription='Inicio de sesión' >
+    <AuthLayout title='Registro' pageDescription='Registrate en nuestra tienda' >
       <section className='w-full'>
         <div className='px-5 max-w-[25rem]'>
           <h2 className='font-Gotham font-medium text-xl'>Iniciar Sesión</h2>
@@ -41,12 +48,12 @@ const RegisterPage = () => {
           {
             showError && (
               <div className='bg-red-500 text-white text-center py-2 px-3 rounded mt-3'>
-                <span>Error hehehe</span>
+                <span>{errorMessage}</span>
               </div>
             )
           }
 
-          <form onSubmit={handleSubmit(handleSubmitLogin)}>
+          <form onSubmit={handleSubmit(handleSubmitRegister)}>
             <div className="w-full group">
               <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
 
@@ -93,7 +100,7 @@ const RegisterPage = () => {
               </div>
 
               <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                <span>{errors.name?.message}</span>
+                <span>{errors.lastname?.message}</span>
               </div>
             </div>  {/* END INPUT LASTNAME */}
 
@@ -182,6 +189,14 @@ const RegisterPage = () => {
               Continuar
             </button>
           </form>
+
+          <div>
+            <Link
+              href={router.query.redirect ? `/auth/login?redirect=${router.query.redirect?.toString()}` : '/auth/login'}
+            >
+              Iniciar Sesión
+            </Link>
+          </div>
         </div>
       </section>
     </AuthLayout>

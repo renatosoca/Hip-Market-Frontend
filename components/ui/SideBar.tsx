@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useUi } from '@/hooks';
+import { useAuth, useUi } from '@/hooks';
+
+const ADMIN_ROLE = 'admin';
 
 export const SideBar = () => {
 
-  const { push } = useRouter()
+  const router = useRouter()
   const { isMenuOpen, handleToggleSideMenu } = useUi();
+  const { isAuthenticated, user, logoutUser } = useAuth();
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -18,7 +21,7 @@ export const SideBar = () => {
 
   const handleNavigate = (url: string) => {
     handleToggleSideMenu();
-    push(url);
+    router.push(url);
   }
 
   return (
@@ -28,6 +31,7 @@ export const SideBar = () => {
         onClick={handleToggleSideMenu}
       >
       </div>
+
       <div
         className={`bg-white absolute top-0 bottom-0 right-0 w-64 z-50 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} transition-[transform] duration-500 z-50`}
       >
@@ -47,8 +51,19 @@ export const SideBar = () => {
         </div>
 
         <ul className="px-4">
-          <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Perfil</li>
-          <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Mis ordenes</li>
+          {
+            isAuthenticated && (
+              <>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>
+                  <Link href='/profile'>
+                    Mi perfil
+                  </Link>
+                </li>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Mis ordenes</li>
+              </>
+            )
+          }
+
           <li
             onClick={() => handleNavigate('/category/men')}
             className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'
@@ -73,16 +88,41 @@ export const SideBar = () => {
               Niños
             </Link>
           </li>
-          <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>
-            <Link href='/auth/login' >
-              Ingresar
-            </Link>
-          </li>
-          <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Salir</li>
-          <p>Admin Panel</p>
-          <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Productos</li>
-          <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Ordenes</li>
-          <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Usuarios</li>
+
+          {
+            !isAuthenticated
+              ? (
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded' >
+                  <Link
+                    href={`/auth/login?redirect=${router.asPath}`}
+                    onClick={() => handleToggleSideMenu()}
+                  >
+                    Ingresar
+                  </Link>
+                </li>
+              )
+              : (
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded' >
+                  <button
+                    type='button'
+                    onClick={logoutUser}
+                  >
+                    Salir
+                  </button>
+                </li>
+              )
+          }
+
+          {
+            user?.role === ADMIN_ROLE && (
+              <>
+                <p>Admin Panel</p>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Productos</li>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Ordenes</li>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Usuarios</li>
+              </>
+            )
+          }
         </ul>
       </div>
     </div>

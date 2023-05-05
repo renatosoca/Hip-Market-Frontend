@@ -1,9 +1,10 @@
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { AuthLayout } from '@/components';
 import { isEmail } from '@/utils';
-import { hipMarketApi } from '@/apis';
-import { useState } from 'react';
-import Link from 'next/link';
+import { useAuth } from '@/hooks';
 
 interface FormData {
   email: string,
@@ -13,21 +14,27 @@ interface FormData {
 
 const LoginPage = () => {
 
+  const router = useRouter();
+  const { loginUser } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
-  const [showError, setShowError] = useState(false)
+  const [showError, setShowError] = useState(false);
 
   const handleSubmitLogin = async ({ email, password }: FormData) => {
-    try {
-      const { data } = await hipMarketApi.post('/auth/login', { email, password });
-      console.log(data)
+    setShowError(false);
 
-    } catch (error) {
-      //console.log(error.response.data)
+    const isValidLogin = await loginUser(email, password);
+
+    if (!isValidLogin) {
       setShowError(true)
-
       setTimeout(() => setShowError(false), 3000);
+      return;
     }
+
+    const redirect = router.query.redirect?.toString() || '/';
+
+    router.replace(redirect);
+
   }
 
   return (
@@ -106,7 +113,9 @@ const LoginPage = () => {
           </form>
 
           <div>
-            <Link href='/auth/register' >
+            <Link
+              href={router.query.redirect ? `/auth/register?redirect=${router.query.redirect?.toString()}` : '/auth/register'}
+            >
               Registrarse
             </Link>
           </div>

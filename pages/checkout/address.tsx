@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import Select from 'react-select';
 import { ShopLayout } from '@/components';
 import { stylesSelect } from '@/utils';
@@ -27,7 +28,7 @@ const AddressPage = () => {
                     id="name"
                     placeholder="Ingresa tu nombre"
                   />
-                  
+
                   <label
                     htmlFor="name"
                     className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
@@ -38,7 +39,7 @@ const AddressPage = () => {
                   <span></span>
                 </div>
               </div>  {/* END INPUT NAME */}
-              
+
               <div className="w-full group">
                 <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
 
@@ -49,7 +50,7 @@ const AddressPage = () => {
                     id="lastname"
                     placeholder="Ingresa tu apellido"
                   />
-                  
+
                   <label
                     htmlFor="lastname"
                     className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
@@ -71,7 +72,7 @@ const AddressPage = () => {
                     id="address"
                     placeholder="Ingresa tu dirección"
                   />
-                  
+
                   <label
                     htmlFor="address"
                     className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
@@ -93,7 +94,7 @@ const AddressPage = () => {
                     id="address-2"
                     placeholder="Ingresa tu segunda dirección"
                   />
-                  
+
                   <label
                     htmlFor="address-2"
                     className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
@@ -115,7 +116,7 @@ const AddressPage = () => {
                     id="postalCode"
                     placeholder="Ingresa tu código postal"
                   />
-                  
+
                   <label
                     htmlFor="postalCode"
                     className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
@@ -137,7 +138,7 @@ const AddressPage = () => {
                     id="city"
                     placeholder="Ingresa tu ciudad"
                   />
-                  
+
                   <label
                     htmlFor="city"
                     className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
@@ -151,7 +152,7 @@ const AddressPage = () => {
 
               <div className='w-full group'>
                 <Select
-                  styles={ stylesSelect }
+                  styles={stylesSelect}
                   options={options}
                   classNamePrefix="select"
                   placeholder="Selecciona tu país"
@@ -173,7 +174,7 @@ const AddressPage = () => {
                     id="phone"
                     placeholder="Ingresa tu Teléfono"
                   />
-                  
+
                   <label
                     htmlFor="phone"
                     className={`input__label absolute left-2 top-[50%] group-focus-within:top-[5%] -translate-y-1/2 group-focus-within:translate-y-0 text-gray-600 group-focus-within:text-[#5FA7F0] text-base group-focus-within:text-xs bg-inherit font-medium transition-[top transform] duration-200 cursor-text`}
@@ -198,6 +199,12 @@ const AddressPage = () => {
       </section>
     </ShopLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return {
+    props: {}
+  }
 }
 
 export default AddressPage

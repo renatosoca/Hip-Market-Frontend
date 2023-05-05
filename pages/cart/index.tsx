@@ -1,5 +1,6 @@
 import { CartEmpty, CartList, CartOrderSummary, ShopLayout } from '@/components';
 import { useCart } from '@/hooks';
+import Link from 'next/link';
 
 const CartPage = () => {
 
@@ -27,11 +28,12 @@ const CartPage = () => {
                   <CartOrderSummary />
 
                   <div className='absolute 2lg:relative bottom-0 right-0 left-0 py-4 2lg:py-0 px-4 2lg:px-0 2lg:mt-2 w-full bg-white 2lg:bg-inherit flex justify-center shadow-2xl 2lg:shadow-none shadow-black'>
-                    <button
-                      className='block bg-blue-600 hover:bg-blue-700 max-w-xl w-full py-2 px-4 rounded text-white font-semibold transition-colors'
+                    <Link
+                      href='/checkout/address'
+                      className='block text-center bg-blue-600 hover:bg-blue-700 max-w-xl w-full py-2 px-4 rounded text-white font-semibold transition-colors'
                     >
                       CheckOut
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
