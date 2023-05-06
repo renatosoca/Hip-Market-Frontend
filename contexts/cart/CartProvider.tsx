@@ -2,6 +2,7 @@ import { FC, PropsWithChildren, useEffect, useReducer, useRef } from 'react';
 import Cookie from 'js-cookie';
 import { ICartProduct } from '@/interfaces';
 import { CartContext, cartReducer } from './';
+import { ShippingAddress } from '@/pages/checkout/address';
 
 export interface CartState {
   cart: ICartProduct[];
@@ -9,6 +10,8 @@ export interface CartState {
   subTotal: number;
   tax: number;
   total: number;
+
+  shippingAddress?: ShippingAddress;
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -17,6 +20,8 @@ const CART_INITIAL_STATE: CartState = {
   subTotal: 0,
   tax: 0,
   total: 0,
+
+  shippingAddress: undefined,
 }
 
 export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -58,6 +63,26 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: '[Cart] - Update Order Summary', payload: orderSummary })
   }, [state.cart])
 
+  useEffect(() => {
+    if (Cookie.get('name')) {
+      const shippingAddress = {
+        name: Cookie.get('name') || '',
+        lastname: Cookie.get('lastname') || '',
+        address: Cookie.get('address') || '',
+        address2: Cookie.get('address2') || '',
+        zip: Cookie.get('zip') || '',
+        city: Cookie.get('city') || '',
+        country: Cookie.get('country') || '',
+        phone: Cookie.get('phone') || '',
+      };
+
+      dispatch({ type: '[Cart] - Load Address from cookies | storage', payload: shippingAddress });
+    }
+  }, [state.shippingAddress])
+
+  const getAddressFromCookies = () => {
+
+  }
 
   const addProductToCart = (product: ICartProduct) => {
     const productInCart = state.cart.some(item => item._id === product._id);

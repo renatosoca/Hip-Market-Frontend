@@ -6,6 +6,7 @@ import { IProductResponse, IProductSlugs, IProductBySlug, ICartProduct, ISizes }
 import { hipMarketApi } from '@/apis';
 import { useCart } from '@/hooks';
 import 'react-slideshow-image/dist/styles.css'
+import { formatPrice } from '@/utils';
 
 interface Props {
   product: IProductResponse;
@@ -60,7 +61,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 
           <div className='col-span-4'>
             <h2 className='font-semibold text-4xl'>{product.title}</h2>
-            <p className='font-medium text-xl'>{`S/ ${product.price}`}</p>
+            <p className='font-medium text-xl'>{formatPrice(product.price)}</p>
 
             <div className=''>
               <div>

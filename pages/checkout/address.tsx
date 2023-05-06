@@ -1,15 +1,53 @@
-import { GetServerSideProps } from 'next';
-import Select from 'react-select';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 import { ShopLayout } from '@/components';
-import { stylesSelect } from '@/utils';
+import { countries } from '@/utils';
+import Cookies from 'js-cookie';
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-]
+export interface ShippingAddress {
+  name: string;
+  lastname: string;
+  address: string;
+  address2?: string;
+  zip: string;
+  city: string;
+  country: string;
+  phone: string;
+}
+
+const getAddressFromCookies = (): ShippingAddress => {
+  return {
+    name: Cookies.get('name') || '',
+    lastname: Cookies.get('lastname') || '',
+    address: Cookies.get('address') || '',
+    address2: Cookies.get('address2') || '',
+    zip: Cookies.get('zip') || '',
+    city: Cookies.get('city') || '',
+    country: Cookies.get('country') || countries[0].name,
+    phone: Cookies.get('phone') || '',
+  }
+}
 
 const AddressPage = () => {
+
+  const router = useRouter();
+  const { register, handleSubmit, formState: { errors } } = useForm<ShippingAddress>({
+    defaultValues: getAddressFromCookies(),
+  });
+
+  const handleSubmitAddress = (data: ShippingAddress) => {
+    Cookies.set('name', data.name);
+    Cookies.set('lastname', data.lastname);
+    Cookies.set('address', data.address);
+    Cookies.set('address2', data.address2 || '');
+    Cookies.set('zip', data.zip);
+    Cookies.set('city', data.city);
+    Cookies.set('country', data.country);
+    Cookies.set('phone', data.phone);
+
+    router.push('/checkout/summary');
+  }
+
   return (
     <ShopLayout title='Dirección' pageDescription='Confirmar dirección del destino'>
       <section className='flex justify-center px-2 2xs:px-4'>
@@ -17,16 +55,21 @@ const AddressPage = () => {
           <h2 className='font-Jakarta font-bold text-2xl 2cs:text-3xl'>Dirección de envío</h2>
 
           <div className='max-w-2xl 2lg:max-w-4xl mx-auto 2lg:mx-0 grid grid-cols-12 gap-4 pt-4'>
-            <div className='col-span-12 flex flex-col gap-4 2cs:grid 2cs:grid-cols-2'>
+            <form
+              onSubmit={handleSubmit(handleSubmitAddress)}
+              className='col-span-12 flex flex-col gap-4 2cs:grid 2cs:grid-cols-2'
+            >
               <div className="w-full group">
                 <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
 
                   <input
                     className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="text"
-                    name="name"
                     id="name"
                     placeholder="Ingresa tu nombre"
+                    {...register('name', {
+                      required: 'Este campo es requerido',
+                    })}
                   />
 
                   <label
@@ -36,7 +79,7 @@ const AddressPage = () => {
                 </div>
 
                 <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                  <span></span>
+                  <span>{errors.name?.message}</span>
                 </div>
               </div>  {/* END INPUT NAME */}
 
@@ -46,9 +89,11 @@ const AddressPage = () => {
                   <input
                     className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="text"
-                    name="lastname"
                     id="lastname"
                     placeholder="Ingresa tu apellido"
+                    {...register('lastname', {
+                      required: 'Este campo es requerido',
+                    })}
                   />
 
                   <label
@@ -58,7 +103,7 @@ const AddressPage = () => {
                 </div>
 
                 <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                  <span></span>
+                  <span>{errors.lastname?.message}</span>
                 </div>
               </div>  {/* END INPUT LASTNAME */}
 
@@ -68,9 +113,11 @@ const AddressPage = () => {
                   <input
                     className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="text"
-                    name="address"
                     id="address"
                     placeholder="Ingresa tu dirección"
+                    {...register('address', {
+                      required: 'Este campo es requerido',
+                    })}
                   />
 
                   <label
@@ -80,7 +127,7 @@ const AddressPage = () => {
                 </div>
 
                 <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                  <span></span>
+                  <span>{errors.address?.message}</span>
                 </div>
               </div>  {/* END INPUT ADDRESS */}
 
@@ -90,9 +137,9 @@ const AddressPage = () => {
                   <input
                     className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="text"
-                    name="address-2"
                     id="address-2"
                     placeholder="Ingresa tu segunda dirección"
+                    {...register('address2')}
                   />
 
                   <label
@@ -102,7 +149,7 @@ const AddressPage = () => {
                 </div>
 
                 <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                  <span></span>
+                  <span>{errors.address2?.message}</span>
                 </div>
               </div>  {/* END INPUT ADDRESS 2 */}
 
@@ -112,9 +159,11 @@ const AddressPage = () => {
                   <input
                     className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="text"
-                    name="postalCode"
                     id="postalCode"
                     placeholder="Ingresa tu código postal"
+                    {...register('zip', {
+                      required: 'Este campo es requerido',
+                    })}
                   />
 
                   <label
@@ -124,7 +173,7 @@ const AddressPage = () => {
                 </div>
 
                 <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                  <span></span>
+                  <span>{errors.zip?.message}</span>
                 </div>
               </div>  {/* END INPUT POSTAL CODE */}
 
@@ -134,9 +183,11 @@ const AddressPage = () => {
                   <input
                     className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="text"
-                    name="city"
                     id="city"
                     placeholder="Ingresa tu ciudad"
+                    {...register('city', {
+                      required: 'Este campo es requerido',
+                    })}
                   />
 
                   <label
@@ -146,21 +197,35 @@ const AddressPage = () => {
                 </div>
 
                 <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                  <span></span>
+                  <span>{errors.city?.message}</span>
                 </div>
               </div>  {/* END INPUT CITY */}
 
               <div className='w-full group'>
-                <Select
-                  styles={stylesSelect}
-                  options={options}
-                  classNamePrefix="select"
-                  placeholder="Selecciona tu país"
+                <select
+                  className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out outline-none p-4`}
                   id='country'
-                />
+                  placeholder="Selecciona tu país"
+                  defaultValue={countries[0].code}
+                  {...register('country', {
+                    required: 'Este campo es requerido',
+                  })}
+                >
+                  {
+                    countries.map(country => (
+                      <option
+                        value={country.code}
+                        key={country.code}
+                        className={`p-3`}
+                      >
+                        {country.name}
+                      </option>
+                    ))
+                  }
+                </select>
 
                 <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                  <span></span>
+                  <span>{errors.country?.message}</span>
                 </div>
               </div>  {/* END SELECT COUNTRY */}
 
@@ -170,9 +235,11 @@ const AddressPage = () => {
                   <input
                     className={`input w-full bg-inherit px-2 pt-3 pb-1 outline-none text-black font-medium resize-none placeholder:text-transparent group-focus-within:placeholder:text-gray-600 placeholder:transition-colors placeholder:duration-200 ease-in`}
                     type="number"
-                    name="phone"
                     id="phone"
                     placeholder="Ingresa tu Teléfono"
+                    {...register('phone', {
+                      required: 'Este campo es requerido',
+                    })}
                   />
 
                   <label
@@ -182,29 +249,24 @@ const AddressPage = () => {
                 </div>
 
                 <div className={`px-2 text-[.8rem] text-red-500 font-medium`} >
-                  <span></span>
+                  <span>{errors.phone?.message}</span>
                 </div>
               </div>  {/* END INPUT CITY */}
-            </div>
 
-            <div className='col-span-12'>
-              <button
-                className='block bg-blue-500 w-full 2cs:w-[15rem] py-2 px-4 rounded text-white font-medium hover:bg-blue-600 transition duration-200 ease-in-out'
-              >
-                Continuar
-              </button>
-            </div>
+              <div className=''>
+                <button
+                  type='submit'
+                  className='block bg-blue-500 w-full 2cs:w-[15rem] py-2 px-4 rounded text-white font-medium hover:bg-blue-600 transition duration-200 ease-in-out'
+                >
+                  Continuar
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </section>
     </ShopLayout>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return {
-    props: {}
-  }
 }
 
 export default AddressPage

@@ -5,6 +5,7 @@ import { MdOutlineClose } from 'react-icons/md';
 import { ItemQuantity } from '../ui';
 import { useCart } from '@/hooks';
 import { ICartProduct } from '@/interfaces';
+import { formatPrice } from '@/utils';
 
 interface Props {
   editable?: boolean;
@@ -61,7 +62,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
               </p>
 
               <div className='flex justify-between items-center text-gray-600 font-sans' >
-                <p className='font-semibold'>{`S/ ${product.price}`}</p>
+                <p className='font-semibold'>{formatPrice(product.price)}</p>
                 {
                   editable
                     ? <ItemQuantity

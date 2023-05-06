@@ -51,7 +51,9 @@ const LoginPage = () => {
             )
           }
 
-          <form onSubmit={handleSubmit(handleSubmitLogin)}>
+          <form
+            onSubmit={handleSubmit(handleSubmitLogin)}
+          >
             <div className="w-full group">
               <div className={`relative w-full bg-gray-300 pt-2 border-b-[.15rem] border-gray-400 hover:border-gray-500 rounded-t text-gray-600 after:content[''] after:absolute after:top-full after:left-0 after:bg-[#5FA7F0] after:w-full after:h-[.18rem] after:scale-0 group-focus-within:after:scale-100 after:transition-all after:duration-300 ease-in-out`} >
 
