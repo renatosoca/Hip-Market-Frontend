@@ -78,10 +78,18 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
 
       dispatch({ type: '[Cart] - Load Address from cookies | storage', payload: shippingAddress });
     }
-  }, [state.shippingAddress])
+  }, [])
 
-  const getAddressFromCookies = () => {
-
+  const updateShippingAdress = (address: ShippingAddress) => {
+    Cookie.set('name', address.name);
+    Cookie.set('lastname', address.lastname);
+    Cookie.set('address', address.address);
+    Cookie.set('address2', address.address2 || '');
+    Cookie.set('zip', address.zip);
+    Cookie.set('city', address.city);
+    Cookie.set('country', address.country);
+    Cookie.set('phone', address.phone);
+    dispatch({ type: '[Cart] - Update Address', payload: address });
   }
 
   const addProductToCart = (product: ICartProduct) => {
@@ -116,6 +124,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       addProductToCart,
       updateCartQuantity,
       deleteProductFromCart,
+      updateShippingAdress,
     }}>
       {children}
     </CartContext.Provider>

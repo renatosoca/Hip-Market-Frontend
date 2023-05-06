@@ -14,6 +14,7 @@ export interface CartContextProps {
   addProductToCart: (product: ICartProduct) => void;
   updateCartQuantity: (product: ICartProduct) => void;
   deleteProductFromCart: (product: ICartProduct) => void;
+  updateShippingAdress: (adresses: ShippingAddress) => void;
 }
 
 export const CartContext = createContext({} as CartContextProps);

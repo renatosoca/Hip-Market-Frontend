@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { ShopLayout } from '@/components';
 import { countries } from '@/utils';
 import Cookies from 'js-cookie';
+import { useCart } from '@/hooks';
 
 export interface ShippingAddress {
   name: string;
@@ -31,19 +32,15 @@ const getAddressFromCookies = (): ShippingAddress => {
 const AddressPage = () => {
 
   const router = useRouter();
+
+  const { updateShippingAdress } = useCart();
+
   const { register, handleSubmit, formState: { errors } } = useForm<ShippingAddress>({
     defaultValues: getAddressFromCookies(),
   });
 
   const handleSubmitAddress = (data: ShippingAddress) => {
-    Cookies.set('name', data.name);
-    Cookies.set('lastname', data.lastname);
-    Cookies.set('address', data.address);
-    Cookies.set('address2', data.address2 || '');
-    Cookies.set('zip', data.zip);
-    Cookies.set('city', data.city);
-    Cookies.set('country', data.country);
-    Cookies.set('phone', data.phone);
+    updateShippingAdress(data);
 
     router.push('/checkout/summary');
   }
