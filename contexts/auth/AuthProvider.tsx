@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import { hipMarketApi } from '@/apis';
 import { IUser } from '@/interfaces';
@@ -27,8 +27,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      console.log(data)
-      //dispatch({ type: '[Auth] - Login', payload: data?.user });
+      dispatch({ type: '[Auth] - Login', payload: data?.user as IUser });
     }
   }, [status, data])
 
@@ -48,6 +47,8 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const logoutUser = (): void => {
     Cookies.remove('authToken');
     Cookies.remove('cart');
+
+    signOut();
     dispatch({ type: '[Auth] - Logout' });
   }
 

@@ -2,6 +2,7 @@ import { FC, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IProduct } from '@/interfaces';
+import { formatPrice } from '@/utils';
 
 interface Props {
   product: IProduct
@@ -43,7 +44,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
       </Link>
       <div className={`animate-fadeIn ${isImageLoaded ? 'block' : 'hidden'}`}>
         <p>{product.title}</p>
-        <small>{product.price}</small>
+        <small>{formatPrice(product.price)}</small>
       </div>
     </div>
   )

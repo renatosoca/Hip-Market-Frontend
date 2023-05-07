@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import { getProviders, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { AuthLayout } from '@/components';
@@ -11,14 +13,14 @@ interface FormData {
   password: string,
 };
 
-
 const LoginPage = () => {
 
   const router = useRouter();
-  const { loginUser } = useAuth();
+  const { loginUser, user } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
   const [showError, setShowError] = useState(false);
+  const [providers, setProviders] = useState<any>({});
 
   const handleSubmitLogin = async ({ email, password }: FormData) => {
     setShowError(false);
@@ -36,6 +38,17 @@ const LoginPage = () => {
     router.replace(redirect);
 
   }
+
+  useEffect(() => {
+    getProviders().then(prov => setProviders(prov))
+  }, [])
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      router.replace(router.query.redirect?.toString() || '/');
+    }
+  }, [user])
 
   return (
     <AuthLayout title='Ingresar' pageDescription='Inicio de sesión' >
@@ -114,6 +127,16 @@ const LoginPage = () => {
             </button>
           </form>
 
+          <div className='flex flex-col'>
+            {
+              Object.values(providers).map((provider: any) => (
+                <button key={provider.id} onClick={() => signIn(provider.id)}>
+                  {provider.name}
+                </button>
+              ))
+            }
+          </div>
+
           <div>
             <Link
               href={router.query.redirect ? `/auth/register?redirect=${router.query.redirect?.toString()}` : '/auth/register'}
@@ -125,6 +148,14 @@ const LoginPage = () => {
       </section>
     </AuthLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+
+
+  return {
+    props: {}
+  }
 }
 
 export default LoginPage
