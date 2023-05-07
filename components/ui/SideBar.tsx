@@ -27,7 +27,7 @@ export const SideBar = () => {
   return (
     <div className={`absolute top-0 bottom-0 left-0 right-0 z-20 ${isMenuOpen ? 'opacity-100' : 'select-none pointer-events-none'} overflow-hidden`} >
       <div
-        className={`bg-black/30 w-full h-full ${isMenuOpen ? 'opacity-100' : 'opacity-0'} transition-[opacity] duration-200`}
+        className={`bg-black/30 w-full h-full ${isMenuOpen ? 'opacity-100' : 'opacity-0'} transition-[opacity] duration-200 backdrop-blur-sm`}
         onClick={handleToggleSideMenu}
       >
       </div>

@@ -1,4 +1,5 @@
 import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
+import { useSession } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import { hipMarketApi } from '@/apis';
 import { IUser } from '@/interfaces';
@@ -17,11 +18,19 @@ const AUTH_INITIAL_STATE: AuthState = {
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
+  const { data, status } = useSession();
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
 
   useEffect(() => {
     revalidateAuth();
   }, []);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      console.log(data)
+      //dispatch({ type: '[Auth] - Login', payload: data?.user });
+    }
+  }, [status, data])
 
   const loginUser = async (email: string, password: string): Promise<boolean> => {
     try {
