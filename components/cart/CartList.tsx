@@ -4,14 +4,15 @@ import Link from 'next/link';
 import { MdOutlineClose } from 'react-icons/md';
 import { ItemQuantity } from '../ui';
 import { useCart } from '@/hooks';
-import { ICartProduct } from '@/interfaces';
+import { ICartProduct, IOrderItem } from '@/interfaces';
 import { formatPrice } from '@/utils';
 
 interface Props {
   editable?: boolean;
+  products?: IOrderItem[];
 }
 
-export const CartList: FC<Props> = ({ editable = false }) => {
+export const CartList: FC<Props> = ({ editable = false, products }) => {
 
   const { cart, updateCartQuantity, deleteProductFromCart } = useCart();
 
@@ -25,15 +26,17 @@ export const CartList: FC<Props> = ({ editable = false }) => {
     deleteProductFromCart(product);
   }
 
+  const productsToShow = products ? products : cart;
+
   return (
     <>
       {
-        cart.map(product => (
+        productsToShow.map(product => (
           <div key={product.slug + product.size} className='flex pt-2 pb-8 last-of-type:pb-0 items-center text-gray-500'>
             <Link href={`/product/${product.slug}`} className='max-w-[7rem] max-h-[7rem]'>
               <Image
                 className='my-auto object-cover'
-                src={`/products/${product.images}`}
+                src={`/products/${product.image}`}
                 alt={product.title}
                 width={80}
                 height={80}
@@ -49,7 +52,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
                   editable && (
                     <button
                       className='block rounded-full p-[.2rem] hover:bg-red-100 transition-colors text-red-400'
-                      onClick={() => handleDeleteProductFromCart(product)}
+                      onClick={() => handleDeleteProductFromCart(product as ICartProduct)}
                     >
                       <MdOutlineClose className='text-xl' />
                     </button>
@@ -64,13 +67,15 @@ export const CartList: FC<Props> = ({ editable = false }) => {
               <div className='flex justify-between items-center text-gray-600 font-sans' >
                 <p className='font-semibold'>{formatPrice(product.price)}</p>
                 {
-                  editable
-                    ? <ItemQuantity
+                  editable ? (
+                    <ItemQuantity
                       currentValue={product.quantity}
                       maxValue={10}
-                      handleUpdateQuantity={(newQuantity) => handleNewCartQuantityValue(product, newQuantity)}
+                      handleUpdateQuantity={(newQuantity) => handleNewCartQuantityValue(product as ICartProduct, newQuantity)}
                     />
-                    : <p className='font-semibold'>{product.quantity} {product.quantity > 1 ? 'productos' : 'producto'}</p>
+                  ) : (
+                    <p className='font-semibold'>{product.quantity} {product.quantity > 1 ? 'productos' : 'producto'}</p>
+                  )
                 }
               </div>
             </div>

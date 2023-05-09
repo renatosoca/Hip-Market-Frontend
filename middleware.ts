@@ -6,8 +6,8 @@ export async function middleware(req: NextRequest) {
   const previousPage = req.nextUrl.pathname;
 
   if (previousPage.startsWith('/checkout')) {
-    /* const token = req.cookies.get('authToken')?.value || ''; */
-    const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const session = req.cookies.get('authToken')?.value || '';
+    /* const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET }); */
 
     if (!session) {
       return NextResponse.redirect(

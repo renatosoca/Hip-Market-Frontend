@@ -17,6 +17,7 @@ type CardActionType =
   }
   | { type: '[Cart] - Load Address from cookies | storage', payload: ShippingAddress }
   | { type: '[Cart] - Update Address', payload: ShippingAddress }
+  | { type: '[Cart] - Order Completed' }
 
 export const cartReducer = (state: CartState, action: CardActionType): CartState => {
   switch (action.type) {
@@ -60,6 +61,16 @@ export const cartReducer = (state: CartState, action: CardActionType): CartState
       return {
         ...state,
         shippingAddress: action.payload
+      }
+
+    case '[Cart] - Order Completed':
+      return {
+        ...state,
+        cart: [],
+        numberOfProducts: 0,
+        subTotal: 0,
+        tax: 0,
+        total: 0,
       }
 
     default:

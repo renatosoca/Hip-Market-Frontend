@@ -54,12 +54,22 @@ export const SideBar = () => {
           {
             isAuthenticated && (
               <>
-                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>
+                <li
+                  onClick={() => handleNavigate('/profile')}
+                  className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'
+                >
                   <Link href='/profile'>
                     Mi perfil
                   </Link>
                 </li>
-                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Mis ordenes</li>
+                <li
+                  onClick={() => handleNavigate('/orders/history')}
+                  className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'
+                >
+                  <Link href='/orders/history' >
+                    Mis ordenes
+                  </Link>
+                </li>
               </>
             )
           }

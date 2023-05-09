@@ -7,12 +7,11 @@ export const NavBar = () => {
 
   const { numberOfProducts } = useCart();
 
-
   const { asPath } = useRouter();
   const { handleToggleSideMenu } = useUi();
 
   return (
-    <header className='sticky bottom-0 w-full bg-white text-black font-bold z-10'>
+    <header className='absolute w-full bg-transparent text-black font-bold z-10'>
       <div className='flex justify-between gap-4 py-4'>
         <h1 className='flex'>
           <Link href='/' className='font-Eczar text-xl 2xs:text-2xl px-2 2xs:px-4'>HipMarket</Link>
@@ -45,24 +44,28 @@ export const NavBar = () => {
           </ul>
         </nav>
 
-        <div className='pr-2 2xs:pr-4 flex items-center gap-4 text-black'>
+        <div className='pr-2 2xs:pr-4 flex items-center gap-4 text-white'>
           <button
-            className='hidden 2xs:block text-black font-bold'
+            className='hidden 2xs:block font-bold'
           >
-            <GrSearch className='text-[1.35rem]' />
+            <GrSearch className='text-[1.35rem] text-white' />
           </button>
 
           <Link
             href='/cart'
-            className='relative text-black'
+            className='relative'
           >
-            <GrCart className='text-[1.35rem]' />
+            <GrCart className='text-[1.35rem] text-white' />
 
-            <span
-              className={`absolute -top-2/3 left-[40%] rounded-full bg-blue-500 text-white text-sm font-Jakarta py-[.1rem] px-2 flex items-center justify-center`}
-            >
-              {numberOfProducts > 9 ? '+9' : numberOfProducts}
-            </span>
+            {
+              numberOfProducts !== 0 && (
+                <span
+                  className={`absolute -top-2/3 left-[40%] rounded-full bg-blue-500 text-white text-sm font-Jakarta py-[.1rem] px-2 flex items-center justify-center`}
+                >
+                  {numberOfProducts > 9 ? '+9' : numberOfProducts}
+                </span>
+              )
+            }
           </Link>
 
           <button

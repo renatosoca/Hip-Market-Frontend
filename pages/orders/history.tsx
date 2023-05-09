@@ -1,5 +1,9 @@
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { ShopLayout } from '@/components';
+import { GetServerSideProps, NextPage } from 'next';
+import { hipMarketApi } from '@/apis';
+import { IOrder } from '@/interfaces';
+import Link from 'next/link';
 
 interface Column {
   id: string;
@@ -16,12 +20,19 @@ const columns: Column[] = [
 ];
 
 const rows = [
-  {id: 1, fullName: 'Nombre completo', paid: true, order: 'Ver orden'},
-  {id: 2, fullName: 'Nombre completo', paid: false, order: 'Ver orden'},
-  {id: 3, fullName: 'Nombre completo', paid: true, order: 'Ver orden'},
+  { id: 1, fullName: 'Nombre completo', paid: true, order: 'Ver orden' },
+  { id: 2, fullName: 'Nombre completo', paid: false, order: 'Ver orden' },
+  { id: 3, fullName: 'Nombre completo', paid: true, order: 'Ver orden' },
 ]
 
-const HistoryPage = () => {
+interface Props {
+  orders: IOrder[];
+}
+
+const HistoryPage: NextPage<Props> = ({ orders }) => {
+
+
+
   return (
     <ShopLayout title="Historial de ordenes" pageDescription="Historial de todas las ordenes">
       <section className='max-w-[75rem] px-2 2xs:px-4 mx-auto'>
@@ -33,7 +44,7 @@ const HistoryPage = () => {
                 <tr className="text-left" >
                   {
                     columns.map((column) => (
-                      <th key={column.id} className={`relative px-4 py-3 after:content[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-[.15rem] last:after:w-0 after:h-4 last:after:h-0 after:bg-gray-200`} style={{width: column.width}}>{column.name}</th>
+                      <th key={column.id} className={`relative px-4 py-3 after:content[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-[.15rem] last:after:w-0 after:h-4 last:after:h-0 after:bg-gray-200`} style={{ width: column.width }}>{column.name}</th>
                     ))
                   }
                 </tr>
@@ -41,18 +52,24 @@ const HistoryPage = () => {
 
               <tbody className="divide-y divide-gray-200 border-b border-gray-200 whitespace-nowrap text-gray-500 text-[.9rem] font-medium">
                 {
-                  rows.map((row) => (
-                    <tr key={row.id}>
-                      <td className="pl-2 py-2">{row.id}</td>
-                      <td className="pl-2 py-2">{row.fullName}</td>
+                  orders.map((order) => (
+                    <tr key={order._id}>
+                      <td className="pl-2 py-2">{order._id}</td>
+                      <td className="pl-2 py-2">{order.shippingAddress.name} {order.shippingAddress.lastname}</td>
                       <td className="pl-2 py-2">
                         {
-                          row.paid
-                          ? <div className='px-4 py-[.1rem] text-green-500 border border-green-500 rounded-full w-max'>Pagado</div> 
-                          : <div className='px-4 py-[.1rem] text-red-500 border border-red-500 rounded-full w-max'>No pagado</div> 
+                          order.isPaid ? (
+                            <div className='px-4 py-[.1rem] text-green-500 border border-green-500 rounded-full w-max'>Pagado</div>
+                          ) : (
+                            <div className='px-4 py-[.1rem] text-red-500 border border-red-500 rounded-full w-max'>No pagado</div>
+                          )
                         }
                       </td>
-                      <td className="pl-2 py-2">{row.order}</td>
+                      <td className="pl-2 py-2">
+                        <Link href={`/orders/${order._id}`} >
+                          Ver orden
+                        </Link>
+                      </td>
                     </tr>
                   ))
                 }
@@ -63,7 +80,7 @@ const HistoryPage = () => {
           <div className='flex justify-end pb-3 text-xl'>
             <div className='flex items-center gap-3 text-gray-500'>
               <p className='text-[.8rem] text-gray-900'>1-6 de 6</p>
-              
+
               <button
                 className='hover:bg-gray-200 rounded-full p-1 transition-colors duration-200 ease-in-out'
               >
@@ -81,6 +98,17 @@ const HistoryPage = () => {
       </section>
     </ShopLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+  const { data } = await hipMarketApi.get('/order');
+
+  return {
+    props: {
+      orders: data
+    }
+  }
 }
 
 export default HistoryPage

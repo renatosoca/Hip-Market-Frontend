@@ -2,15 +2,36 @@ import Link from 'next/link';
 import { CartList, CartOrderSummary, ShopLayout } from '@/components'
 import { useAuth, useCart } from '@/hooks';
 import { countries } from '@/utils';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const SummaryPage = () => {
 
+  const router = useRouter();
+
   const { user } = useAuth();
-  const { shippingAddress } = useCart();
+  const { shippingAddress, createOrder } = useCart();
+
+  const [isPosting, setIsPosting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   if (!shippingAddress) return <></>;
 
   const { name, lastname, address, city, country, phone, zip, address2 = '' } = shippingAddress;
+
+  const handleCreateOrder = async () => {
+    setIsPosting(true);
+
+    const { hasError, message } = await createOrder();
+    console.log(message)
+    if (hasError) {
+      setIsPosting(false);
+      setErrorMessage(message);
+      return;
+    }
+
+    router.replace(`/orders/${message}`);
+  }
 
   return (
     <ShopLayout title='Resumen del pedido' pageDescription='Resumen de la orden'>
@@ -64,11 +85,17 @@ const SummaryPage = () => {
 
               <div>
                 <button
+                  onClick={handleCreateOrder}
                   className='block bg-blue-600 hover:bg-blue-700 max-w-xl w-full py-2 px-4 rounded text-white font-semibold transition-colors'
+                  disabled={isPosting}
                 >
                   Confirmar Orden
                 </button>
               </div>
+
+              {!!errorMessage && (
+                <div className='bg-red-500 px-4 py-1'>{errorMessage}</div>
+              )}
             </div>
           </div>
         </div>

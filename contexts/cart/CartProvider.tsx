@@ -1,8 +1,9 @@
 import { FC, PropsWithChildren, useEffect, useReducer, useRef } from 'react';
 import Cookie from 'js-cookie';
-import { ICartProduct } from '@/interfaces';
+import { ICartProduct, IOrder } from '@/interfaces';
 import { CartContext, cartReducer } from './';
 import { ShippingAddress } from '@/pages/checkout/address';
+import { hipMarketApi } from '@/apis';
 
 export interface CartState {
   cart: ICartProduct[];
@@ -117,6 +118,39 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: '[Cart] - Remove Product in Cart', payload: product });
   }
 
+  const createOrder = async (): Promise<{ hasError: boolean; message: string }> => {
+
+    if (!state.shippingAddress) throw new Error('Shipping address is required');
+
+    const body: IOrder = {
+      orderItems: state.cart.map(item => ({ ...item, size: item.size! })),
+      shippingAddress: state.shippingAddress,
+      paymentMethod: 'PayPal',
+      numberOfProducts: state.numberOfProducts,
+      subTotal: state.subTotal,
+      tax: state.tax,
+      total: state.total,
+      isPaid: false,
+    }
+
+    try {
+      const { data } = await hipMarketApi.post('/order', body)
+
+      dispatch({ type: '[Cart] - Order Completed' });
+
+      return {
+        hasError: false,
+        message: data.order._id,
+      }
+
+    } catch (error: any) {
+      return {
+        hasError: true,
+        message: error.response.data.msg,
+      }
+    }
+  }
+
   return (
     <CartContext.Provider value={{
       ...state,
@@ -125,6 +159,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       updateCartQuantity,
       deleteProductFromCart,
       updateShippingAdress,
+      createOrder,
     }}>
       {children}
     </CartContext.Provider>
