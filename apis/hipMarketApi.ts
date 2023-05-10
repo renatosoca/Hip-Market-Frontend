@@ -6,7 +6,7 @@ const hipMarketApi = axios.create({
 });
 
 hipMarketApi.interceptors.request.use(config => {
-  const token: string = `${Cookies.get('authToken')}`;
+  const token: string = Cookies.get('authToken') || '';
 
   if (token) config.headers.Authorization = `Bearer ${token}`;
 

@@ -1,17 +1,43 @@
 import { GetServerSideProps, NextPage } from 'next';
 import { MdOutlineCreditCardOff, MdCreditScore } from 'react-icons/md';
 
-import { BraintreePayPalButtons, PayPalButtons } from "@paypal/react-paypal-js";
+import { PayPalButtons } from "@paypal/react-paypal-js";
+import { OrderResponseBody } from '@paypal/paypal-js';
 
 import { CartList, CartOrderSummary, ShopLayout } from '@/components';
 import { IOrder } from '@/interfaces';
 import { hipMarketApi } from '@/apis';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 interface Props {
   order: IOrder;
 }
 
 const OrderPage: NextPage<Props> = ({ order }) => {
+
+  const router = useRouter();
+
+  const [isPaying, setIsPaying] = useState(false);
+
+  const handleOrderCompleted = async (details: OrderResponseBody) => {
+    if (details.status !== 'COMPLETED') return alert('Error al procesar el pago');
+
+    setIsPaying(true);
+
+    try {
+      const { data } = await hipMarketApi.post(`/order/pay-order`, {
+        orderId: order._id,
+        transactionId: details.id,
+      })
+
+      router.reload();
+    } catch (error) {
+      setIsPaying(false);
+      console.log(error)
+    }
+  }
+
   return (
     <ShopLayout title='Resumen de la orden 1224131' pageDescription='Resumen de la orden'>
       <section className='max-w-[37.5rem] 2lg:max-w-[75rem] mx-auto px-4 2lg:px-10 pt-6'>
@@ -78,7 +104,42 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                 }}
               />
 
+
               {
+                isPaying ? (
+                  <div className='text-center text-2xl text-black py-2 animate-fadeIn'>
+                    Validando...
+                  </div>
+                ) : order.isPaid ? (
+                  <div className='flex items-center gap-2 w-max px-4 py-1 text-green-500 font-medium border border-green-500 rounded-full'>
+                    <MdCreditScore className='text-2xl' />
+                    Orden pagada
+                  </div>
+                ) : (
+                  <div>
+                    <PayPalButtons
+                      createOrder={(data, actions) => {
+                        return actions.order.create({
+                          purchase_units: [
+                            {
+                              amount: {
+                                value: order.total.toString(),
+                              },
+                            },
+                          ],
+                        });
+                      }}
+                      onApprove={(data, actions) => {
+                        return actions.order!.capture().then((details) => {
+                          handleOrderCompleted(details);
+                        });
+                      }}
+                    />
+                  </div>
+                )
+              }
+
+              {/* {
                 order.isPaid ? (
                   <div className='flex items-center gap-2 w-max px-4 py-1 text-green-500 font-medium border border-green-500 rounded-full'>
                     <MdCreditScore className='text-2xl' />
@@ -100,15 +161,13 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                       }}
                       onApprove={(data, actions) => {
                         return actions.order!.capture().then((details) => {
-                          console.log(details)
-                          const name = details.payer.name!.given_name;
-                          alert(`Transaction completed by ${name}`);
+                          handleOrderCompleted(details);
                         });
                       }}
                     />
                   </div>
                 )
-              }
+              } */}
             </div>
           </div>
         </div>

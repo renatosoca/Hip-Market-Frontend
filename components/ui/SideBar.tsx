@@ -100,34 +100,36 @@ export const SideBar = () => {
           </li>
 
           {
-            !isAuthenticated
-              ? (
-                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded' >
-                  <Link
-                    href={`/auth/login?redirect=${router.asPath}`}
-                    onClick={() => handleToggleSideMenu()}
-                  >
-                    Ingresar
-                  </Link>
-                </li>
-              )
-              : (
-                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded' >
-                  <button
-                    type='button'
-                    onClick={logoutUser}
-                  >
-                    Salir
-                  </button>
-                </li>
-              )
+            !isAuthenticated ? (
+              <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded' >
+                <Link
+                  href={`/auth/login?redirect=${router.asPath}`}
+                  onClick={() => handleToggleSideMenu()}
+                >
+                  Ingresar
+                </Link>
+              </li>
+            ) : (
+              <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded' >
+                <button
+                  type='button'
+                  onClick={logoutUser}
+                >
+                  Salir
+                </button>
+              </li>
+            )
           }
 
           {
             user?.role === ADMIN_ROLE && (
               <>
                 <p>Admin Panel</p>
-                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Productos</li>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>
+                  <Link href='/admin'>
+                    Dashboard
+                  </Link>
+                </li>
                 <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Ordenes</li>
                 <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Usuarios</li>
               </>
