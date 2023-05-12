@@ -131,7 +131,11 @@ export const SideBar = () => {
                   </Link>
                 </li>
                 <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Ordenes</li>
-                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Usuarios</li>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>
+                  <Link href='/admin/users' >
+                    Usuarios
+                  </Link>
+                </li>
               </>
             )
           }
