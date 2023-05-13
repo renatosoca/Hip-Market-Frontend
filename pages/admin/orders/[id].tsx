@@ -1,12 +1,7 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
 import { GetServerSideProps, NextPage } from 'next';
 import { MdOutlineCreditCardOff, MdCreditScore } from 'react-icons/md';
 
-import { PayPalButtons } from "@paypal/react-paypal-js";
-import { OrderResponseBody } from '@paypal/paypal-js';
-
-import { CartList, CartOrderSummary, ShopLayout } from '@/components';
+import { AdminLayout, CartList, CartOrderSummary } from '@/components';
 import { IOrder } from '@/interfaces';
 import { hipMarketApi } from '@/apis';
 
@@ -15,31 +10,8 @@ interface Props {
 }
 
 const OrderPage: NextPage<Props> = ({ order }) => {
-
-  const router = useRouter();
-
-  const [isPaying, setIsPaying] = useState(false);
-
-  const handleOrderCompleted = async (details: OrderResponseBody) => {
-    if (details.status !== 'COMPLETED') return alert('Error al procesar el pago');
-
-    setIsPaying(true);
-
-    try {
-      const { data } = await hipMarketApi.post(`/order/pay-order`, {
-        orderId: order._id,
-        transactionId: details.id,
-      })
-
-      router.reload();
-    } catch (error) {
-      setIsPaying(false);
-      console.log(error)
-    }
-  }
-
   return (
-    <ShopLayout title='Resumen de la orden 1224131' pageDescription='Resumen de la orden'>
+    <AdminLayout title='Resumen de la orden 1224131' pageDescription='Resumen de la orden'>
       <section className='max-w-[37.5rem] 2lg:max-w-[75rem] mx-auto px-4 2lg:px-10 pt-6'>
         <div className='flex justify-between items-start'>
           <h2 className='font-Gotham font-semibold text-2xl 2lg:text-3xl pb-6'>Orden: {order._id}</h2>
@@ -105,36 +77,15 @@ const OrderPage: NextPage<Props> = ({ order }) => {
               />
 
               {
-                isPaying ? (
-                  <div className='text-center text-2xl text-black py-2 animate-fadeIn'>
-                    Validando...
-                  </div>
-                ) : order.isPaid ? (
+                order.isPaid ? (
                   <div className='flex items-center gap-2 w-max px-4 py-1 text-green-500 font-medium border border-green-500 rounded-full'>
                     <MdCreditScore className='text-2xl' />
                     Orden pagada
                   </div>
                 ) : (
-                  <div>
-                    <PayPalButtons
-                      createOrder={(data, actions) => {
-                        return actions.order.create({
-                          purchase_units: [
-                            {
-                              amount: {
-                                currency_code: 'USD',
-                                value: order.total.toString(),
-                              },
-                            },
-                          ],
-                        });
-                      }}
-                      onApprove={(data, actions) => {
-                        return actions.order!.capture().then((details) => {
-                          handleOrderCompleted(details);
-                        });
-                      }}
-                    />
+                  <div className='flex items-center gap-2 w-max px-4 py-1 text-red-500 font-medium border border-red-500 rounded-full'>
+                    <MdOutlineCreditCardOff className='text-2xl' />
+                    Pendiente de Pago
                   </div>
                 )
               }
@@ -142,7 +93,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
           </div>
         </div>
       </section>
-    </ShopLayout>
+    </AdminLayout>
   )
 }
 
@@ -157,7 +108,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   if (!data) {
     return {
       redirect: {
-        destination: '/orders/history',
+        destination: '/admin/orders',
         permanent: false,
       }
     }

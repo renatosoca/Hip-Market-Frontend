@@ -14,7 +14,7 @@ import 'nprogress/nprogress.css';
 
 const initialOptions = {
   "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
-  currency: "USD",
+  //currency: "USD",
   //intent: "capture",
   //"data-client-token": "abc123xyz==",
 };

@@ -1,49 +1,31 @@
-import { hipMarketApi } from '@/apis';
 import { AdminLayout } from '@/components';
-import { IUser } from '@/interfaces';
-import React, { useEffect, useState } from 'react'
+import { IProduct } from '@/interfaces';
+import Image from 'next/image';
+import Link from 'next/link';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import useSWR from 'swr';
 
 const columns: any = [
-  { id: 'id', name: 'ID', width: '5rem' },
-  { id: 'name', name: 'Nombre', width: '10rem' },
-  { id: 'email', name: 'Email', width: '20rem' },
-  { id: 'role', name: 'Rol', width: '10rem' },
+  { id: 'image', name: 'Imagen', width: '5rem' },
+  { id: 'title', name: 'Titulo', width: '10rem' },
+  { id: 'gender', name: 'Genero', width: '20rem' },
+  { id: 'type', name: 'Tipo', width: '10rem' },
+  { id: 'inStock', name: 'Inventario', width: '10rem' },
+  { id: 'price', name: 'Precio', width: '10rem' },
+  { id: 'sizes', name: 'Tallas', width: '10rem' },
 ];
 
-const UsersPage = () => {
+const ProductsPage = () => {
 
-  const { data, isLoading } = useSWR('/user/all');
-  const [allUsers, setAllUsers] = useState<IUser[]>([]);
+  const { data, error } = useSWR<IProduct[]>('/admin/products');
 
-  useEffect(() => {
-    if (data) {
-      setAllUsers(data?.users);
-    }
+  if (!data && !error) return <p>Cargando...</p>;
 
-  }, [data])
-
-  if (isLoading) return <p>Cargando...</p>
-
-  const handleChangeRole = async (_id: string, role: string) => {
-
-    const previusUsers = allUsers.map((user) => ({ ...user }));
-    const updatedUsers = allUsers.map((user) => ({ ...user, role: user._id === _id ? role : user.role }));
-    setAllUsers(updatedUsers);
-
-    try {
-      await hipMarketApi.put('/user/update', { _id, role });
-
-    } catch (error) {
-      console.log(error)
-      setAllUsers(previusUsers)
-    }
-  }
+  const products = data || [];
 
   return (
     <AdminLayout title='Usuarios' pageDescription='Administración de usuarios'>
-      <h1>Usuarios</h1>
+      <h1>Productos ({products.length})</h1>
 
       <div className='w-full min-h-[calc(100vh-15rem)] flex flex-col justify-between border-2 border-gray-200 rounded-md overflow-auto'>
         <div className='min-w-full w-full table-auto overflow-auto'>
@@ -60,25 +42,26 @@ const UsersPage = () => {
 
             <tbody className="divide-y divide-gray-200 border-b border-gray-200 whitespace-nowrap text-gray-500 text-[.9rem] font-medium">
               {
-                allUsers.map((user: IUser) => (
-                  <tr key={user._id}>
-                    <td className="pl-2 py-2">{user._id}</td>
-                    <td className="pl-2 py-2">{user.name} {user.lastname}</td>
-                    <td className="pl-2 py-2">{user.email}</td>
+                products.map((product) => (
+                  <tr key={product._id}>
                     <td className="pl-2 py-2">
-                      <select
-                        id="role"
-                        name="roles"
-                        value={user.role}
-                        onChange={({ target }) => handleChangeRole(user._id, target.value)}
-                      >
-                        {
-                          ['admin', 'super-user', 'client'].map((role: string) => (
-                            <option key={role} value={role}>{role}</option>
-                          ))
-                        }
-                      </select>
+                      <Link href={`/product/${product.slug}`} >
+                        <Image
+                          alt={product.title}
+                          src={`/products/${product.images[0]}`}
+                          width={50}
+                          height={50}
+                          className="rounded-md object-cover"
+                          priority
+                        />
+                      </Link>
                     </td>
+                    <td className="pl-2 py-2">{product.title}</td>
+                    <td className="pl-2 py-2">{product.gender}</td>
+                    <td className="pl-2 py-2">{product.type}</td>
+                    <td className="pl-2 py-2">{product.inStock}</td>
+                    <td className="pl-2 py-2">{product.price}</td>
+                    <td className="pl-2 py-2">{product.sizes.join('-')}</td>
                   </tr>
                 ))
               }
@@ -108,4 +91,4 @@ const UsersPage = () => {
   )
 }
 
-export default UsersPage;
+export default ProductsPage;

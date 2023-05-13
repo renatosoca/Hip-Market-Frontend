@@ -130,7 +130,16 @@ export const SideBar = () => {
                     Dashboard
                   </Link>
                 </li>
-                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>Ordenes</li>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>
+                  <Link href='/admin/orders' >
+                    Ordenes
+                  </Link>
+                </li>
+                <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>
+                  <Link href='/admin/products' >
+                    Productos
+                  </Link>
+                </li>
                 <li className='py-1 bg-gray-300 mb-1 last:mb-0 px-3 rounded'>
                   <Link href='/admin/users' >
                     Usuarios
