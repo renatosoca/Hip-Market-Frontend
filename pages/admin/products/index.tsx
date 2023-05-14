@@ -1,9 +1,10 @@
-import { AdminLayout } from '@/components';
-import { IProduct } from '@/interfaces';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import useSWR from 'swr';
+import { AdminLayout } from '@/components';
+import { IProduct } from '@/interfaces';
 
 const columns: any = [
   { id: 'image', name: 'Imagen', width: '5rem' },
@@ -56,7 +57,11 @@ const ProductsPage = () => {
                         />
                       </Link>
                     </td>
-                    <td className="pl-2 py-2">{product.title}</td>
+                    <td className="pl-2 py-2">
+                      <Link href={`/admin/products/${product.slug}`} className='hover:underline' >
+                        {product.title}
+                      </Link>
+                    </td>
                     <td className="pl-2 py-2">{product.gender}</td>
                     <td className="pl-2 py-2">{product.type}</td>
                     <td className="pl-2 py-2">{product.inStock}</td>
