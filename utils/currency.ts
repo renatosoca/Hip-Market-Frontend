@@ -13,3 +13,13 @@ export const formatDate = (date: string): string => {
     timeStyle: 'short'
   }).format(new Date(date));
 }
+
+export const generateSlug = (slug: string) => {
+  const newSlug = slug
+    .trim()
+    .replace(/\s+/g, "_")
+    .replace(/[^\w-]+/g, "")
+    .toLowerCase();
+
+  return newSlug;
+}

@@ -131,9 +131,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const { slug = '' } = params as { slug: string };
-  const { data } = await hipMarketApi.get<IProductBySlug>(`/products/${slug}`);
-
-  if (!data.product) {
+  const { data, statusText } = await hipMarketApi.get<IProductBySlug>(`/products/${slug}`);
+  console.log(data, statusText)
+  if (!data) {
     return {
       redirect: {
         destination: '/',
@@ -146,7 +146,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       product: data.product
     },
-    revalidate: 60 * 60 * 24
+    revalidate: 60 * 10
   }
 }
 

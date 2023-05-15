@@ -122,7 +122,6 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                           purchase_units: [
                             {
                               amount: {
-                                currency_code: 'USD',
                                 value: order.total.toString(),
                               },
                             },

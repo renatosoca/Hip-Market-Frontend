@@ -5,6 +5,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import useSWR from 'swr';
 import { AdminLayout } from '@/components';
 import { IProduct } from '@/interfaces';
+import { formatPrice } from '@/utils';
 
 const columns: any = [
   { id: 'image', name: 'Imagen', width: '5rem' },
@@ -25,7 +26,7 @@ const ProductsPage = () => {
   const products = data || [];
 
   return (
-    <AdminLayout title='Usuarios' pageDescription='Administración de usuarios'>
+    <AdminLayout title='Productos' pageDescription='Administración de Productos'>
       <h1>Productos ({products.length})</h1>
 
       <div className='w-full min-h-[calc(100vh-15rem)] flex flex-col justify-between border-2 border-gray-200 rounded-md overflow-auto'>
@@ -46,7 +47,7 @@ const ProductsPage = () => {
                 products.map((product) => (
                   <tr key={product._id}>
                     <td className="pl-2 py-2">
-                      <Link href={`/product/${product.slug}`} >
+                      <Link href={`/product/${product.slug}`} target='_blank' >
                         <Image
                           alt={product.title}
                           src={`/products/${product.images[0]}`}
@@ -65,7 +66,7 @@ const ProductsPage = () => {
                     <td className="pl-2 py-2">{product.gender}</td>
                     <td className="pl-2 py-2">{product.type}</td>
                     <td className="pl-2 py-2">{product.inStock}</td>
-                    <td className="pl-2 py-2">{product.price}</td>
+                    <td className="pl-2 py-2">{formatPrice(product.price)}</td>
                     <td className="pl-2 py-2">{product.sizes.join('-')}</td>
                   </tr>
                 ))
