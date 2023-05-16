@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
 import { Controller, useForm } from 'react-hook-form';
@@ -36,7 +36,8 @@ const ProductAdminPage: NextPage<Props> = ({ product }) => {
   const router = useRouter();
 
   const [newTagValue, setNewTagValue] = useState('');
-  const [isSaving, setIsSaving] = useState(false)
+  const [isSaving, setIsSaving] = useState(false);
+  const fileImputRef = useRef<HTMLInputElement>(null);
 
   const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm<FormData>({
     defaultValues: product,
@@ -80,6 +81,33 @@ const ProductAdminPage: NextPage<Props> = ({ product }) => {
     const updatedTags = getValues('tags').filter(tag => tag !== tagValue);
 
     return setValue('tags', updatedTags, { shouldValidate: true });
+  }
+
+  const handleUploadImages = async ({ target }: ChangeEvent<HTMLInputElement>) => {
+    if (!target.files || target.files.length === 0) return;
+
+    try {
+      for (const file of target.files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const { data } = await hipMarketApi.post('/products/upload/images', formData);
+        setValue('images', [...getValues('images'), data.imageFile], { shouldValidate: true });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleDeleteImage = async (image: string) => {
+    try {
+      const { data } = await hipMarketApi.post('/products/delete/images', { image });
+
+      if (data.ok) {
+        setValue('images', getValues('images').filter(img => img !== image), { shouldValidate: true });
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -397,31 +425,46 @@ const ProductAdminPage: NextPage<Props> = ({ product }) => {
           <div>
             <h2>Imagenes</h2>
 
-            <button type="button" className="bg-blue-500 w-full py-1 rounded-lg text-white">
-              <label htmlFor="">
-                <input type="file" name="" id="" />
-              </label>
+            <button
+              type="button"
+              className="bg-blue-500 w-full py-1 rounded-lg text-white"
+              onClick={() => fileImputRef.current?.click()}
+            >
+              Subir imagen
             </button>
+            <input
+              type="file"
+              multiple
+              accept='image/*'
+              className='hidden'
+              ref={fileImputRef}
+              onChange={handleUploadImages}
+            />
 
+            {
+              getValues('images').length < 2 && (
+                <div>Es necesario 2 imagenes</div>
+              )
+            }
             <div className="flex gap-3" >
+
               {
-                product.images.length < 2 && (
-                  <span>Es necesario 2 imagenes</span>
-                )
-              }
-              {
-                product.images.map((image) => (
+                getValues('images').map((image) => (
                   <div key={image} className="flex flex-col gap-2">
                     <Image
-                      src={`/products/${image}`}
+                      src={image.includes('http') ? image : `/products/${image}`}
                       alt={image}
                       className=" object-cover"
                       width={80}
                       height={80}
                       priority
                     />
-                    <button type="button" className="bg-red-500 w-full py-1 rounded-lg text-white">
-                      <span>Eliminar</span>
+                    <button
+                      type="button"
+                      className="bg-red-500 w-full py-1 rounded-lg text-white"
+                      onClick={() => handleDeleteImage(image)}
+                    >
+                      Eliminar
                     </button>
                   </div>
                 ))
@@ -455,7 +498,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       slug: '',
       description: '',
       price: 0,
-      images: ['hola.jpg', 'adios.jpg'],
+      images: [],
       tags: [],
       inStock: 0,
       sizes: [],

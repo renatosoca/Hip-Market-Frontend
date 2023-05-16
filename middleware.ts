@@ -14,7 +14,7 @@ export async function middleware(req: NextRequest) {
     url.pathname = `/auth/login`
     url.search = `redirect=${previousPage}`; */
     return NextResponse.redirect(
-      new URL(`/auth/login?p=${previousPage}`, req.url)
+      new URL(`/auth/login?redirect=${previousPage}`, req.url)
     );
   }
 

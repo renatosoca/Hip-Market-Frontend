@@ -29,6 +29,13 @@ const ProductsPage = () => {
     <AdminLayout title='Productos' pageDescription='Administración de Productos'>
       <h1>Productos ({products.length})</h1>
 
+      <Link
+        href='/admin/products/new'
+        className='hover:underline'
+      >
+        Agregar un producto
+      </Link>
+
       <div className='w-full min-h-[calc(100vh-15rem)] flex flex-col justify-between border-2 border-gray-200 rounded-md overflow-auto'>
         <div className='min-w-full w-full table-auto overflow-auto'>
           <table className='table-auto w-full'>
